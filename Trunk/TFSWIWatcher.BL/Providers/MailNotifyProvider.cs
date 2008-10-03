@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Configuration;
 using System.IO;
+using System.Reflection;
 using System.Xml;
 using System.Xml.Xsl;
 using System.Net.Mail;
@@ -109,6 +110,10 @@ namespace TFSWIWatcher.BL.Providers
         {
             try
             {
+                string currentPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+                _log.DebugFormat("Setting current directory to {0}", currentPath);
+                Directory.SetCurrentDirectory(currentPath);
+
                 using (TextReader styleTextReader = new StreamReader(_config.MailTransformationFile))
                 {
                     using (XmlReader styleXmlReader = new XmlTextReader(styleTextReader))
