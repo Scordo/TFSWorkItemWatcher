@@ -5,9 +5,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TFSWIWatcher.BL", "TFSWIWat
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TFSWIWatcher.Service", "TFSWIWatcher.Service\TFSWIWatcher.Service.csproj", "{FD78E9CF-B934-43AC-8003-56B491CA7B44}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TFSWIWatcher.Resources", "TFSWIWatcher.Resources\TFSWIWatcher.Resources.csproj", "{5D6A4AD3-42C8-4B40-8EE4-6E49405755A6}"
+EndProject
 Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 3
+		SccNumberOfProjects = 4
 		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
 		SccTeamFoundationServer = https://tfs08.codeplex.com/
 		SccLocalPath0 = .
@@ -17,6 +19,9 @@ Global
 		SccProjectUniqueName2 = TFSWIWatcher.Service\\TFSWIWatcher.Service.csproj
 		SccProjectName2 = TFSWIWatcher.Service
 		SccLocalPath2 = TFSWIWatcher.Service
+		SccProjectUniqueName3 = TFSWIWatcher.Resources\\TFSWIWatcher.Resources.csproj
+		SccProjectName3 = TFSWIWatcher.Resources
+		SccLocalPath3 = TFSWIWatcher.Resources
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -59,6 +64,17 @@ Global
 		{FD78E9CF-B934-43AC-8003-56B491CA7B44}.X86_Release|Any CPU.ActiveCfg = X86_Release|Any CPU
 		{FD78E9CF-B934-43AC-8003-56B491CA7B44}.X86_Release|X86.ActiveCfg = X86_Release|X86
 		{FD78E9CF-B934-43AC-8003-56B491CA7B44}.X86_Release|X86.Build.0 = X86_Release|X86
+		{5D6A4AD3-42C8-4B40-8EE4-6E49405755A6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5D6A4AD3-42C8-4B40-8EE4-6E49405755A6}.Debug|X86.ActiveCfg = Debug|Any CPU
+		{5D6A4AD3-42C8-4B40-8EE4-6E49405755A6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5D6A4AD3-42C8-4B40-8EE4-6E49405755A6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5D6A4AD3-42C8-4B40-8EE4-6E49405755A6}.Release|X86.ActiveCfg = Release|Any CPU
+		{5D6A4AD3-42C8-4B40-8EE4-6E49405755A6}.X86_Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5D6A4AD3-42C8-4B40-8EE4-6E49405755A6}.X86_Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5D6A4AD3-42C8-4B40-8EE4-6E49405755A6}.X86_Debug|X86.ActiveCfg = Debug|Any CPU
+		{5D6A4AD3-42C8-4B40-8EE4-6E49405755A6}.X86_Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5D6A4AD3-42C8-4B40-8EE4-6E49405755A6}.X86_Release|Any CPU.Build.0 = Release|Any CPU
+		{5D6A4AD3-42C8-4B40-8EE4-6E49405755A6}.X86_Release|X86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
