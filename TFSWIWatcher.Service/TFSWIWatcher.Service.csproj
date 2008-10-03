@@ -92,15 +92,15 @@
   <ItemGroup>
     <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\TFSWIWatcher.BL\Components\log4net.dll</HintPath>
+      <HintPath>..\TFSWIWatcher.Resources\Components\log4net.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.TeamFoundation, Version=9.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\Program Files (x86)\Microsoft Visual Studio 9.0\Common7\IDE\PrivateAssemblies\Microsoft.TeamFoundation.dll</HintPath>
+      <HintPath>..\TFSWIWatcher.Resources\Components\Microsoft.TeamFoundation.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.TeamFoundation.Client, Version=9.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\Program Files (x86)\Microsoft Visual Studio 9.0\Common7\IDE\PrivateAssemblies\Microsoft.TeamFoundation.Client.dll</HintPath>
+      <HintPath>..\TFSWIWatcher.Resources\Components\Microsoft.TeamFoundation.Client.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.configuration" />
@@ -153,10 +153,6 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="App_Template.config" />
-    <None Include="ReleaseStuff\Installation.docx" />
-    <None Include="ReleaseStuff\TFSWIWatcher.Service.exe.config" />
-    <None Include="ReleaseStuff\install.bat" />
-    <None Include="ReleaseStuff\uninstall.bat" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">

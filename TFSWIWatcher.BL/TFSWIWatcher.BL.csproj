@@ -78,22 +78,25 @@
     <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.cs</CodeAnalysisModuleSuppressionsFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821, processorArchitecture=MSIL" />
+    <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\TFSWIWatcher.Resources\Components\log4net.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.TeamFoundation, Version=9.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\Program Files (x86)\Microsoft Visual Studio 9.0\Common7\IDE\PrivateAssemblies\Microsoft.TeamFoundation.dll</HintPath>
+      <HintPath>..\TFSWIWatcher.Resources\Components\Microsoft.TeamFoundation.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.TeamFoundation.Client, Version=9.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\Program Files (x86)\Microsoft Visual Studio 9.0\Common7\IDE\PrivateAssemblies\Microsoft.TeamFoundation.Client.dll</HintPath>
+      <HintPath>..\TFSWIWatcher.Resources\Components\Microsoft.TeamFoundation.Client.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.TeamFoundation.Common, Version=9.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\Program Files (x86)\Microsoft Visual Studio 9.0\Common7\IDE\PrivateAssemblies\Microsoft.TeamFoundation.Common.dll</HintPath>
+      <HintPath>..\TFSWIWatcher.Resources\Components\Microsoft.TeamFoundation.Common.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.TeamFoundation.WorkItemTracking.Client, Version=9.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\Program Files (x86)\Microsoft Visual Studio 9.0\Common7\IDE\PrivateAssemblies\Microsoft.TeamFoundation.WorkItemTracking.Client.dll</HintPath>
+      <HintPath>..\TFSWIWatcher.Resources\Components\Microsoft.TeamFoundation.WorkItemTracking.Client.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.configuration" />
@@ -133,10 +136,6 @@
     <Compile Include="WorkItemRelated\WorkItemIntegerField.cs" />
     <Compile Include="WorkItemRelated\WorkItemStringField.cs" />
     <Compile Include="WorkItemRelated\WorkItemTextField.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Components\log4net.dll" />
-    <Content Include="Components\log4net.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
