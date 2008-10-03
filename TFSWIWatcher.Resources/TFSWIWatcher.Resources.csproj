@@ -45,16 +45,22 @@
   </Target>
   -->
   <ItemGroup>
+    <Content Include="Components\ICSharpCode.SharpZipLib.dll" />
     <Content Include="Components\log4net.dll" />
     <Content Include="Components\log4net.xml" />
     <Content Include="Components\Microsoft.TeamFoundation.Client.dll" />
     <Content Include="Components\Microsoft.TeamFoundation.Common.dll" />
     <Content Include="Components\Microsoft.TeamFoundation.dll" />
     <Content Include="Components\Microsoft.TeamFoundation.WorkItemTracking.Client.dll" />
+    <Content Include="Components\MSBuild.Community.Tasks.dll" />
+    <Content Include="Components\MSBuild.Community.Tasks.xml" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Components\MSBuild.Community.Tasks.xsd" />
+    <None Include="Documentation\Installation.rtf" />
+    <None Include="ReleaseStuff\CreateRelease.bat" />
     <None Include="ReleaseStuff\install.bat" />
-    <None Include="Documentation\Installation.docx" />
+    <None Include="ReleaseStuff\Release.target" />
     <None Include="ReleaseStuff\TFSWIWatcher.Service.exe.config" />
     <None Include="ReleaseStuff\uninstall.bat" />
   </ItemGroup>
