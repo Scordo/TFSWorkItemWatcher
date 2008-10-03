@@ -54,11 +54,8 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="ReleaseStuff\install.bat" />
-    <None Include="ReleaseStuff\Installation.docx" />
+    <None Include="Documentation\Installation.docx" />
     <None Include="ReleaseStuff\TFSWIWatcher.Service.exe.config" />
     <None Include="ReleaseStuff\uninstall.bat" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Documentation\" />
   </ItemGroup>
 </Project>
