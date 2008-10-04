@@ -7,9 +7,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TFSWIWatcher.Service", "TFS
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TFSWIWatcher.Resources", "TFSWIWatcher.Resources\TFSWIWatcher.Resources.csproj", "{5D6A4AD3-42C8-4B40-8EE4-6E49405755A6}"
 EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "TFSWIWatcher.Setup", "TFSWIWatcher.Setup\TFSWIWatcher.Setup.vdproj", "{A4531AEB-FEBD-45D2-A919-B5412A0A25DC}"
+EndProject
 Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 4
+		SccNumberOfProjects = 5
 		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
 		SccTeamFoundationServer = https://tfs08.codeplex.com/
 		SccLocalPath0 = .
@@ -22,6 +24,9 @@ Global
 		SccProjectUniqueName3 = TFSWIWatcher.Resources\\TFSWIWatcher.Resources.csproj
 		SccProjectName3 = TFSWIWatcher.Resources
 		SccLocalPath3 = TFSWIWatcher.Resources
+		SccProjectUniqueName4 = TFSWIWatcher.Setup\\TFSWIWatcher.Setup.vdproj
+		SccProjectName4 = TFSWIWatcher.Setup
+		SccLocalPath4 = TFSWIWatcher.Setup
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -50,6 +55,10 @@ Global
 		{5D6A4AD3-42C8-4B40-8EE4-6E49405755A6}.Debug|X86.ActiveCfg = Debug|Any CPU
 		{5D6A4AD3-42C8-4B40-8EE4-6E49405755A6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5D6A4AD3-42C8-4B40-8EE4-6E49405755A6}.Release|X86.ActiveCfg = Release|Any CPU
+		{A4531AEB-FEBD-45D2-A919-B5412A0A25DC}.Debug|Any CPU.ActiveCfg = Debug
+		{A4531AEB-FEBD-45D2-A919-B5412A0A25DC}.Debug|X86.ActiveCfg = Debug
+		{A4531AEB-FEBD-45D2-A919-B5412A0A25DC}.Release|Any CPU.ActiveCfg = Release
+		{A4531AEB-FEBD-45D2-A919-B5412A0A25DC}.Release|X86.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
