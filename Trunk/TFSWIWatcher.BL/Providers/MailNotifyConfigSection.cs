@@ -64,7 +64,15 @@ namespace TFSWIWatcher.BL.Providers
         {
             try
             {
-                return (MailNotifyConfigSection)ConfigurationManager.GetSection("MailNotifyConfig");
+                MailNotifyConfigSection config = (MailNotifyConfigSection)ConfigurationManager.GetSection("MailNotifyConfig");
+
+                if (config == null)
+                {
+                    _log.Error("Could not find MailNotifyConfigSection.");
+                    throw new ConfigurationErrorsException("Could not find MailNotifyConfigSection.");
+                }
+
+                return config;
             }
             catch (Exception ex)
             {

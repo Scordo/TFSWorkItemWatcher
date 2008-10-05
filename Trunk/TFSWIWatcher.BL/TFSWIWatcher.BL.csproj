@@ -118,6 +118,8 @@
   <ItemGroup>
     <Compile Include="ITFSNotification.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Providers\ConfigCredentialsConfigSection.cs" />
+    <Compile Include="Providers\ConfigCredentialsProvider.cs" />
     <Compile Include="Providers\INotifyProvider.cs" />
     <Compile Include="Providers\IObserverAccountProvider.cs" />
     <Compile Include="Providers\MailNotifyConfigSection.cs" />

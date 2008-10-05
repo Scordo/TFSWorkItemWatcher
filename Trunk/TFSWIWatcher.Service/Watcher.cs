@@ -51,17 +51,15 @@ namespace TFSWIWatcher.Service
                 if (!int.TryParse(portString, out port))
                     throw new ConfigurationErrorsException("Please provide a valid LocalServicePort.");
 
-                _log.Debug("Determining IObserverAccountProvider");
                 _observerAccountProvider = ProviderFactory.GetObserverAccountProvider();
                 _log.Debug("Initializing IObserverAccountProvider");
                 _observerAccountProvider.Initialize();
 
-                _log.Debug("Determining INotifyProvider");
                 _notifyProvider = ProviderFactory.GetNotifyProvider();
                 _log.Debug("Initializing INotifyProvider");
                 _notifyProvider.Initialize();
 
-                TeamFoundationServer tfs = new TeamFoundationServer(server, new UICredentialsProvider());
+                TeamFoundationServer tfs = new TeamFoundationServer(server, ProviderFactory.GetCredentialsProvider());
                 _log.DebugFormat("Authenticating against teamserver: {0}", server);
                 tfs.Authenticate();
                 _tfsServer = tfs;
