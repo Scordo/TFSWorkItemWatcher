@@ -92,7 +92,15 @@ namespace TFSWIWatcher.BL.Providers
         {
             try
             {
-                return (TFSObserverAccountConfigSection)ConfigurationManager.GetSection("TFSObserverAccountConfig");
+                TFSObserverAccountConfigSection config = (TFSObserverAccountConfigSection)ConfigurationManager.GetSection("TFSObserverAccountConfig");
+
+                if (config == null)
+                {
+                    _log.Error("Could not find TFSObserverAccountConfigSection.");
+                    throw new ConfigurationErrorsException("Could not find TFSObserverAccountConfigSection.");
+                }
+
+                return config;
             }
             catch (Exception ex)
             {

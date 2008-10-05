@@ -1,21 +1,33 @@
 ﻿using System;
 using System.Reflection;
 using System.Configuration;
+using log4net;
+using Microsoft.TeamFoundation.Client;
 
 namespace TFSWIWatcher.BL.Providers
 {
     public static class ProviderFactory
     {
+        private static readonly ILog _log = LogManager.GetLogger(typeof(ProviderFactory));
+
         #region Public Methods
 
         public static IObserverAccountProvider GetObserverAccountProvider()
         {
+            _log.Debug("Determining IObserverAccountProvider");
             return GetConfiguredProviderInstance<IObserverAccountProvider>("ObserverAccountProvider");
         }
 
         public static INotifyProvider GetNotifyProvider()
         {
+            _log.Debug("Determining INotifyProvider");
             return GetConfiguredProviderInstance<INotifyProvider>("NotifyProvider");
+        }
+
+        public static ICredentialsProvider GetCredentialsProvider()
+        {
+            _log.Debug("Determining ICredentialsProvider");
+            return GetConfiguredProviderInstance<ICredentialsProvider>("CredentialsProvider");
         }
 
         #endregion
