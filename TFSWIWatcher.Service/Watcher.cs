@@ -6,6 +6,7 @@ using log4net;
 using Microsoft.TeamFoundation.Client;
 using Microsoft.TeamFoundation.Server;
 using TFSWIWatcher.BL;
+using TFSWIWatcher.BL.Configuration;
 using TFSWIWatcher.BL.Providers;
 using TFSWIWatcher.BL.WorkItemRelated;
 
@@ -18,12 +19,29 @@ namespace TFSWIWatcher.Service
 
         private static readonly ILog _log = LogManager.GetLogger(typeof(Watcher));
         private IObserverAccountProvider _observerAccountProvider;
-        private INotifyProvider _notifyProvider;
+        private List<INotifyProvider> _notifyProviders;
         private ServiceHost _serviceHost;
         private TeamFoundationServer _tfsServer;
         private int _eventID;
+        private ConfigSettingsConfigurationSection _configSettings;
 
         #endregion
+
+        #region Properties
+
+        private ConfigSettingsConfigurationSection ConfigSettings
+        {
+            get
+            {
+                if (_configSettings == null)
+                    _configSettings = ConfigSettingsConfigurationSection.GetFromConfig("ConfigSettings");
+
+                return _configSettings;
+            }
+        }
+
+        #endregion
+
 
         #region Public Methods
 
@@ -31,46 +49,29 @@ namespace TFSWIWatcher.Service
         {
             try
             {
-                _log.Debug("Determining TeamServer");
-                string server = ConfigurationManager.AppSettings["TeamServer"];
-
-                if (server == null)
-                    throw new ConfigurationErrorsException("Could not find TeamServer-Key in AppSettings.");
+                string server = ConfigSettings.TeamServer;
 
                 if (server.Trim().Length == 0)
                     throw new ConfigurationErrorsException("Please provide a non empty TeamServer in AppSettings.");
 
-                _log.Debug("Determining LocalServicePort");
-                string portString = ConfigurationManager.AppSettings["LocalServicePort"];
-
-                if (portString == null)
-                    throw new ConfigurationErrorsException("Could not find LocalServicePort-Key in AppSettings.");
-
-                int port;
-
-                if (!int.TryParse(portString, out port))
-                    throw new ConfigurationErrorsException("Please provide a valid LocalServicePort.");
-
-                _observerAccountProvider = ProviderFactory.GetObserverAccountProvider();
+                _observerAccountProvider = ConfigSettings.GetObserverAccountProvider();
                 _log.Debug("Initializing IObserverAccountProvider");
                 _observerAccountProvider.Initialize();
 
-                _notifyProvider = ProviderFactory.GetNotifyProvider();
-                _log.Debug("Initializing INotifyProvider");
-                _notifyProvider.Initialize();
+                _notifyProviders = ConfigSettings.GetNotifyProviders();
 
-                TeamFoundationServer tfs = new TeamFoundationServer(server, ProviderFactory.GetCredentialsProvider());
+                TeamFoundationServer tfs = new TeamFoundationServer(server, ConfigSettings.GetCredentialsProvider());
                 _log.DebugFormat("Authenticating against teamserver: {0}", server);
                 tfs.Authenticate();
                 _tfsServer = tfs;
 
                 _log.Debug("Creating wcf service host");
-                _serviceHost = TFSHelper.CreateServiceHost(port, this, "Notify");
+                _serviceHost = TFSHelper.CreateServiceHost(ConfigSettings.LocalServicePort, this, "Notify");
                 _log.Debug("Starting wcf service host");
                 _serviceHost.Open();
 
                 _log.Debug("Registering WorkItemChangedEvent with teamserver");
-                _eventID = TFSHelper.RegisterWithTFS(_tfsServer, "WorkItemChangedEvent", string.Empty, port, "Notify");
+                _eventID = TFSHelper.RegisterWithTFS(_tfsServer, "WorkItemChangedEvent", string.Empty, ConfigSettings.LocalServicePort, "Notify");
                 _log.DebugFormat("Registered WorkItemChangedEvent with teamserver, eventID is: {0}", _eventID);
             }
             catch (Exception ex)
@@ -126,7 +127,10 @@ namespace TFSWIWatcher.Service
             _log.Debug("Finish: Getting observers");
 
             _log.Debug("Start: Notifying");
-            _notifyProvider.Notify(observerAccounts, context);
+            foreach (INotifyProvider provider in _notifyProviders)
+            {
+                provider.Notify(observerAccounts, context);    
+            }
             _log.Debug("Finish: Notifying");
         }
 
@@ -146,7 +150,7 @@ namespace TFSWIWatcher.Service
                 WorkItemIntegerField identityField = workItemChangeInfo.CoreFields.IntegerFields.Find(x => x.ReferenceName == "System.Id");
                 WorkItemIntegerField revisionField = workItemChangeInfo.CoreFields.IntegerFields.Find(x => x.ReferenceName == "System.Rev");
 
-                return new WorkItemChangedContext(eventXml, workItemChangeInfo, serverInfo, _tfsServer, identityField.NewValue, revisionField.NewValue);
+                return new WorkItemChangedContext(eventXml, workItemChangeInfo, serverInfo, _tfsServer, identityField.NewValue, revisionField.NewValue, ConfigSettings);
             }
             catch (Exception ex)
             {

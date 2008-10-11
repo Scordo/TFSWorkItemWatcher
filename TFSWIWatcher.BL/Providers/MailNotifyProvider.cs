@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Configuration;
 using System.IO;
 using System.Reflection;
 using System.Xml;
@@ -7,6 +6,7 @@ using System.Xml.Xsl;
 using System.Net.Mail;
 using System.Collections.Generic;
 using log4net;
+using TFSWIWatcher.BL.Configuration;
 
 namespace TFSWIWatcher.BL.Providers
 {
@@ -14,20 +14,20 @@ namespace TFSWIWatcher.BL.Providers
     {
         #region Non Public Members
 
-        private MailNotifyConfigSection _config;
+        private MailNotifyConfigurationSection _config;
         private static readonly ILog _log = LogManager.GetLogger(typeof(MailNotifyProvider));
 
         #endregion
 
         #region INotifyProvider Members
 
-        void INotifyProvider.Initialize()
+        void INotifyProvider.Initialize(string parameters)
         {
-            _log.Debug("Start: Initializing.");
+            _log.DebugFormat("Start: Initializing with Parameters: {0}.", parameters);
             
             try
             {
-                _config = MailNotifyConfigSection.GetFromConfig();
+                _config = MailNotifyConfigurationSection.GetFromConfig(parameters);
             }
             catch (Exception ex)
             {
@@ -59,7 +59,7 @@ namespace TFSWIWatcher.BL.Providers
             _log.DebugFormat("Start: Notifying Account {0}.", observerAccount);
             string email;
 
-            if (ConfigurationManager.AppSettings["IsDev"] == "1" && _config.DevMail != null)
+            if (context.ConfigSettings.IsDev && _config.DevMail != null)
             {
                 _log.DebugFormat("Running in dev-mode using mail {0}.", _config.DevMail);
                 email = _config.DevMail;

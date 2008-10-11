@@ -1,10 +1,13 @@
 ﻿using Microsoft.TeamFoundation.Client;
+using TFSWIWatcher.BL.Configuration;
 using TFSWIWatcher.BL.WorkItemRelated;
 
 namespace TFSWIWatcher.BL
 {
     public class WorkItemChangedContext
     {
+        #region Properties
+
         public string NotifyXML
         {
             get; internal set;
@@ -35,7 +38,17 @@ namespace TFSWIWatcher.BL
             get; internal set;
         }
 
-        public WorkItemChangedContext(string notifyXML, WorkItemChangeInfo changeInfo, ServerInfo serverInfo, TeamFoundationServer teamserver, int workItemID, int workItemRevision)
+        public ConfigSettingsConfigurationSection ConfigSettings
+        {
+            get;
+            internal set;
+        }
+
+        #endregion
+
+        #region Constructors
+
+        public WorkItemChangedContext(string notifyXML, WorkItemChangeInfo changeInfo, ServerInfo serverInfo, TeamFoundationServer teamserver, int workItemID, int workItemRevision, ConfigSettingsConfigurationSection configSettings)
         {
             NotifyXML = notifyXML;
             WorkItemChangeInfo = changeInfo;
@@ -43,6 +56,9 @@ namespace TFSWIWatcher.BL
             TeamServer = teamserver;
             WorkItemID = workItemID;
             WorkItemRevision = workItemRevision;
+            ConfigSettings = configSettings;
         }
+
+        #endregion
     }
 }
