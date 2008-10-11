@@ -3,6 +3,7 @@ using System.Configuration;
 using System.Net;
 using log4net;
 using Microsoft.TeamFoundation.Client;
+using TFSWIWatcher.BL.Configuration;
 
 namespace TFSWIWatcher.BL.Providers
 {
@@ -14,7 +15,7 @@ namespace TFSWIWatcher.BL.Providers
 
         public ICredentials GetCredentials(Uri uri, ICredentials failedCredentials)
         {
-            NetworkCredential configCredentials = ConfigCredentialsConfigSection.GetFromConfig().Credentials;
+            NetworkCredential configCredentials = ConfigCredentialsConfigurationSection.GetFromConfig().Credentials;
 
             if (CredentialsAreEqual(configCredentials, (NetworkCredential) failedCredentials))
             {

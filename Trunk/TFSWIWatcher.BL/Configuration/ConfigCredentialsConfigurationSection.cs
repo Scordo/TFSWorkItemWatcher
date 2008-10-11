@@ -4,13 +4,13 @@ using System.Net;
 using System.Xml;
 using log4net;
 
-namespace TFSWIWatcher.BL.Providers
+namespace TFSWIWatcher.BL.Configuration
 {
-    public class ConfigCredentialsConfigSection
+    public class ConfigCredentialsConfigurationSection
     {
         #region Non Public Members
 
-        private static readonly ILog _log = LogManager.GetLogger(typeof(ConfigCredentialsConfigSection));
+        private static readonly ILog _log = LogManager.GetLogger(typeof(ConfigCredentialsConfigurationSection));
 
         #endregion
 
@@ -49,7 +49,7 @@ namespace TFSWIWatcher.BL.Providers
 
         #region Constructors
 
-        internal ConfigCredentialsConfigSection(XmlNode section)
+        internal ConfigCredentialsConfigurationSection(XmlNode section)
         {
             if (section == null)
                 throw new ConfigurationErrorsException("ConfigCredentialsConfig-Node does not exist.");
@@ -99,11 +99,11 @@ namespace TFSWIWatcher.BL.Providers
 
         #region Public Methods
 
-        public static ConfigCredentialsConfigSection GetFromConfig()
+        public static ConfigCredentialsConfigurationSection GetFromConfig()
         {
             try
             {
-                ConfigCredentialsConfigSection config = (ConfigCredentialsConfigSection)ConfigurationManager.GetSection("ConfigCredentialsConfig");
+                ConfigCredentialsConfigurationSection config = (ConfigCredentialsConfigurationSection)ConfigurationManager.GetSection("ConfigCredentialsConfig");
                 
                 if (config == null)
                 {
@@ -123,13 +123,13 @@ namespace TFSWIWatcher.BL.Providers
         #endregion
     }
 
-    public class ConfigCredentialsConfigSectionHandler : IConfigurationSectionHandler
+    public class ConfigCredentialsConfigurationSectionHandler : IConfigurationSectionHandler
     {
         #region IConfigurationSectionHandler Members
 
         public object Create(object parent, object configContext, XmlNode section)
         {
-            return new ConfigCredentialsConfigSection(section);
+            return new ConfigCredentialsConfigurationSection(section);
         }
 
         #endregion

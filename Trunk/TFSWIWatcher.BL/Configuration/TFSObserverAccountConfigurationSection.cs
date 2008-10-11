@@ -5,14 +5,14 @@ using System.Configuration;
 using System.Text.RegularExpressions;
 using log4net;
 
-namespace TFSWIWatcher.BL.Providers
+namespace TFSWIWatcher.BL.Configuration
 {
-    public class TFSObserverAccountConfigSection
+    public class TFSObserverAccountConfigurationSection
     {
         #region Non Public Members
 
         private readonly static Dictionary<string, RegexOptions> _options;
-        private static readonly ILog _log = LogManager.GetLogger(typeof(TFSObserverAccountConfigSection));
+        private static readonly ILog _log = LogManager.GetLogger(typeof(TFSObserverAccountConfigurationSection));
 
         #endregion
 
@@ -40,7 +40,7 @@ namespace TFSWIWatcher.BL.Providers
 
         #region Constructor
 
-        internal TFSObserverAccountConfigSection(XmlNode section)
+        internal TFSObserverAccountConfigurationSection(XmlNode section)
         {
             if (section == null)
                 throw new ConfigurationErrorsException("TFSObserverAccountConfig-Node does not exist.");
@@ -73,7 +73,7 @@ namespace TFSWIWatcher.BL.Providers
             RegexOptions = ParseRegexOptions(regexOptionsNode.InnerText);
         }
 
-        static TFSObserverAccountConfigSection()
+        static TFSObserverAccountConfigurationSection()
         {
             _options = new Dictionary<string, RegexOptions>();
 
@@ -88,11 +88,11 @@ namespace TFSWIWatcher.BL.Providers
 
         #region Public Methods
 
-        public static TFSObserverAccountConfigSection GetFromConfig()
+        public static TFSObserverAccountConfigurationSection GetFromConfig()
         {
             try
             {
-                TFSObserverAccountConfigSection config = (TFSObserverAccountConfigSection)ConfigurationManager.GetSection("TFSObserverAccountConfig");
+                TFSObserverAccountConfigurationSection config = (TFSObserverAccountConfigurationSection)ConfigurationManager.GetSection("TFSObserverAccountConfig");
 
                 if (config == null)
                 {
@@ -133,13 +133,13 @@ namespace TFSWIWatcher.BL.Providers
         #endregion
     }
 
-    public class TFSObserverAccountConfigSectionHandler : IConfigurationSectionHandler
+    public class TFSObserverAccountConfigurationSectionHandler : IConfigurationSectionHandler
     {
         #region IConfigurationSectionHandler Members
 
         public object Create(object parent, object configContext, XmlNode section)
         {
-            return new TFSObserverAccountConfigSection(section);
+            return new TFSObserverAccountConfigurationSection(section);
         }
 
         #endregion

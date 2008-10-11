@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using log4net;
 using Microsoft.TeamFoundation.WorkItemTracking.Client;
+using TFSWIWatcher.BL.Configuration;
 
 namespace TFSWIWatcher.BL.Providers
 {
@@ -10,7 +11,7 @@ namespace TFSWIWatcher.BL.Providers
     {
         #region Non Public Members
 
-        private TFSObserverAccountConfigSection _config;
+        private TFSObserverAccountConfigurationSection _config;
         private static readonly ILog _log = LogManager.GetLogger(typeof(TFSObserverAccountProvider));
 
         #endregion
@@ -23,7 +24,7 @@ namespace TFSWIWatcher.BL.Providers
            
             try
             {
-                _config = TFSObserverAccountConfigSection.GetFromConfig();
+                _config = TFSObserverAccountConfigurationSection.GetFromConfig();
             }
             catch (Exception ex)
             {

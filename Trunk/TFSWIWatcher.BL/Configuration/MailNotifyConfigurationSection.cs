@@ -4,13 +4,13 @@ using System.Xml;
 using System.Configuration;
 using log4net;
 
-namespace TFSWIWatcher.BL.Providers
+namespace TFSWIWatcher.BL.Configuration
 {
-    public class MailNotifyConfigSection
+    public class MailNotifyConfigurationSection
     {
         #region Non Public Members
 
-        private static readonly ILog _log = LogManager.GetLogger(typeof(MailNotifyConfigSection));
+        private static readonly ILog _log = LogManager.GetLogger(typeof(MailNotifyConfigurationSection));
 
         #endregion
 
@@ -32,7 +32,7 @@ namespace TFSWIWatcher.BL.Providers
 
         #region Constructors
 
-        internal MailNotifyConfigSection(XmlNode section)
+        internal MailNotifyConfigurationSection(XmlNode section)
         {
             if (section == null)
                 throw new ConfigurationErrorsException("MailNotifyConfig-Node does not exist.");
@@ -60,23 +60,26 @@ namespace TFSWIWatcher.BL.Providers
 
         #region Public Methods
 
-        public static MailNotifyConfigSection GetFromConfig()
+        public static MailNotifyConfigurationSection GetFromConfig(string configSectionName)
         {
+            if (configSectionName == null || configSectionName.Trim().Length == 0)
+                configSectionName = "MailNotifyConfig";
+
             try
             {
-                MailNotifyConfigSection config = (MailNotifyConfigSection)ConfigurationManager.GetSection("MailNotifyConfig");
+                MailNotifyConfigurationSection config = (MailNotifyConfigurationSection)ConfigurationManager.GetSection(configSectionName);
 
                 if (config == null)
                 {
-                    _log.Error("Could not find MailNotifyConfigSection.");
-                    throw new ConfigurationErrorsException("Could not find MailNotifyConfigSection.");
+                    _log.ErrorFormat("Could not find MailNotifyConfigSection: {0}.", configSectionName);
+                    throw new ConfigurationErrorsException(string.Format("Could not find MailNotifyConfigSection: {0}.", configSectionName));
                 }
 
                 return config;
             }
             catch (Exception ex)
             {
-                _log.ErrorFormat("Error while reading MailNotifyConfigSection from config file: {0}", ex);
+                _log.ErrorFormat("Error while reading MailNotifyConfigSection '{0}' from config file: {1}", configSectionName, ex);
                 throw;
             }
         }
@@ -84,13 +87,13 @@ namespace TFSWIWatcher.BL.Providers
         #endregion
     }
 
-    public class MailNotifyConfigSectionHandler : IConfigurationSectionHandler
+    public class MailNotifyConfigurationSectionHandler : IConfigurationSectionHandler
     {
         #region IConfigurationSectionHandler Members
 
         public object Create(object parent, object configContext, XmlNode section)
         {
-            return new MailNotifyConfigSection(section);
+            return new MailNotifyConfigurationSection(section);
         }
 
         #endregion

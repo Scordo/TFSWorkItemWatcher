@@ -4,7 +4,7 @@ namespace TFSWIWatcher.BL.Providers
 {
     public interface INotifyProvider
     {
-        void Initialize();
+        void Initialize(string parameters);
         void Notify(List<string> observerAccounts, WorkItemChangedContext context);
     }
 }
