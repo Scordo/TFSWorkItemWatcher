@@ -120,6 +120,7 @@
     <Compile Include="Configuration\ConfigSettingsConfigurationSection.cs" />
     <Compile Include="Configuration\ProviderConfigSettings.cs" />
     <Compile Include="Configuration\ProviderConfigSettingsCollection.cs" />
+    <Compile Include="Configuration\XMLObserverAccountProviderConfigurationSection.cs" />
     <Compile Include="Instancer.cs" />
     <Compile Include="ITFSNotification.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -131,6 +132,7 @@
     <Compile Include="Providers\MailNotifyProvider.cs" />
     <Compile Include="Configuration\TFSObserverAccountConfigurationSection.cs" />
     <Compile Include="Providers\TFSObserverAccountProvider.cs" />
+    <Compile Include="Providers\XMLObserverAccountProvider.cs" />
     <Compile Include="ServerInfo.cs" />
     <Compile Include="TFSHelper.cs" />
     <Compile Include="WorkItemChangedContext.cs" />
