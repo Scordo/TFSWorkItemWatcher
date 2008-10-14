@@ -18,7 +18,7 @@ namespace TFSWIWatcher.Service
         #region Non Public Members
 
         private static readonly ILog _log = LogManager.GetLogger(typeof(Watcher));
-        private IObserverAccountProvider _observerAccountProvider;
+        private List<IObserverAccountProvider> _observerAccountProviders;
         private List<INotifyProvider> _notifyProviders;
         private ServiceHost _serviceHost;
         private TeamFoundationServer _tfsServer;
@@ -54,10 +54,7 @@ namespace TFSWIWatcher.Service
                 if (server.Trim().Length == 0)
                     throw new ConfigurationErrorsException("Please provide a non empty TeamServer in AppSettings.");
 
-                _observerAccountProvider = ConfigSettings.GetObserverAccountProvider();
-                _log.Debug("Initializing IObserverAccountProvider");
-                _observerAccountProvider.Initialize();
-
+                _observerAccountProviders = ConfigSettings.GetObserverAccountProviders();
                 _notifyProviders = ConfigSettings.GetNotifyProviders();
 
                 TeamFoundationServer tfs = new TeamFoundationServer(server, ConfigSettings.GetCredentialsProvider());
@@ -123,7 +120,13 @@ namespace TFSWIWatcher.Service
             _log.Debug("Finish: Creating context");
 
             _log.Debug("Start: Getting observers");
-            List<string> observerAccounts = _observerAccountProvider.GetObservers(context);
+            List<string> observerAccounts = new List<string>();
+
+            foreach (IObserverAccountProvider observerAccountProvider in _observerAccountProviders)
+            {
+                observerAccounts.AddRange(observerAccountProvider.GetObservers(context));
+            }
+
             _log.Debug("Finish: Getting observers");
 
             _log.Debug("Start: Notifying");

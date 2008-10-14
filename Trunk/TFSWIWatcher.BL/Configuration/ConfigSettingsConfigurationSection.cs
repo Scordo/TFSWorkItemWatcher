@@ -25,10 +25,11 @@ namespace TFSWIWatcher.BL.Configuration
             get { return (ProviderConfigSettingsCollection)base["NotifyProviders"]; }
         }
 
-        [ConfigurationProperty("ObserverAccountProvider")]
-        protected ProviderConfigSettings ObserverAccountProviderSetting
+        [ConfigurationProperty("ObserverAccountProviders", IsRequired = true)]
+        [ConfigurationCollection(typeof(ProviderConfigSettingsCollection), AddItemName = "Provider")]
+        protected ProviderConfigSettingsCollection AllObserverAccountProvidersSetting
         {
-            get { return (ProviderConfigSettings) base["ObserverAccountProvider"]; }
+            get { return (ProviderConfigSettingsCollection)base["ObserverAccountProviders"]; }
         }
 
         [ConfigurationProperty("CredentialsProvider")]
@@ -93,10 +94,38 @@ namespace TFSWIWatcher.BL.Configuration
             return result;
         }
 
-        public IObserverAccountProvider GetObserverAccountProvider()
+        public List<IObserverAccountProvider> GetObserverAccountProviders()
         {
-            _log.Debug("Instanciating IObserverAccountProvider");
-            return Instancer.GetInstanceOfInterface<IObserverAccountProvider>(ObserverAccountProviderSetting.AssemblyName, ObserverAccountProviderSetting.ProviderClass);
+            return GetObserverAccountProviders(true);
+        }
+
+        protected List<IObserverAccountProvider> GetObserverAccountProviders(bool initialize)
+        {
+            if (!initialize)
+                _log.Debug("Instanciating IObserverAccountProvider");
+
+            List<IObserverAccountProvider> result = new List<IObserverAccountProvider>();
+
+            foreach (ProviderConfigSettings providerConfigSettings in AllObserverAccountProvidersSetting.OfType<ProviderConfigSettings>())
+            {
+                if (providerConfigSettings.Enabled)
+                {
+                    if (!initialize)
+                        _log.Debug(string.Format("Instantiating IObserverAccountProvider {0}", providerConfigSettings.ProviderClass));
+
+                    IObserverAccountProvider observerAccountProvider = Instancer.GetInstanceOfInterface<IObserverAccountProvider>(providerConfigSettings.AssemblyName, providerConfigSettings.ProviderClass);
+
+                    if (initialize)
+                    {
+                        _log.Debug(string.Format("Initializing IObserverAccountProvider {0}", providerConfigSettings.ProviderClass));
+                        observerAccountProvider.Initialize();
+                    }
+
+                    result.Add(observerAccountProvider);
+                }
+            }
+
+            return result;
         }
 
         public ICredentialsProvider GetCredentialsProvider()
@@ -131,14 +160,17 @@ namespace TFSWIWatcher.BL.Configuration
             if (!CredentialsProviderSetting.Deserialized)
                 throw new ConfigurationErrorsException("Missing CredentialsProvider Section in config.");
 
-            if (!ObserverAccountProviderSetting.Deserialized)
-                throw new ConfigurationErrorsException("Missing ObserverAccountProvider Section in config.");
+            if (!AllObserverAccountProvidersSetting.Deserialized)
+                throw new ConfigurationErrorsException("Missing ObserverAccountProviders Section in config.");
+
+            if (GetObserverAccountProviders(false).Count == 0)
+                throw new ConfigurationErrorsException("Please provide at least one enabled ObserverAccountProvider in ObserverAccountProviders Section in config.");
 
             if (!AllNotifyProvidersSetting.Deserialized)
                 throw new ConfigurationErrorsException("Missing NotifyProviders Section in config.");
 
             if (GetNotifyProviders(false).Count == 0)
-                throw new ConfigurationErrorsException("Please provide at least on enabled NotifyProvider in NotifyProviders Section in config.");
+                throw new ConfigurationErrorsException("Please provide at least one enabled NotifyProvider in NotifyProviders Section in config.");
         }
 
         #endregion
