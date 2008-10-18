@@ -54,14 +54,49 @@
     <Content Include="Components\Microsoft.TeamFoundation.WorkItemTracking.Client.dll" />
     <Content Include="Components\MSBuild.Community.Tasks.dll" />
     <Content Include="Components\MSBuild.Community.Tasks.xml" />
+    <Content Include="Documentation\Index.html" />
+    <Content Include="Documentation\Resources\ArchitectureOverview.jpg" />
+    <Content Include="Documentation\Resources\ArchitectureOverviewSmall.jpg" />
+    <Content Include="Documentation\Resources\BasicConfigSettings.jpg" />
+    <Content Include="Documentation\Resources\ConfigCredentialsProviderChoice.jpg" />
+    <Content Include="Documentation\Resources\ConfigCredentialsProviderConfigSectionSetup.jpg" />
+    <Content Include="Documentation\Resources\CredentialsProviderConfigSection.jpg" />
+    <Content Include="Documentation\Resources\CredentialsProviderConfigSectionSample.jpg" />
+    <Content Include="Documentation\Resources\FieldDefinition.jpg" />
+    <Content Include="Documentation\Resources\ICredentialsProvider.jpg" />
+    <Content Include="Documentation\Resources\INotifyProvider.jpg" />
+    <Content Include="Documentation\Resources\IObserverAccountProvider.jpg" />
+    <Content Include="Documentation\Resources\Log4NetConfig.jpg" />
+    <Content Include="Documentation\Resources\MailNotifyConfig.jpg" />
+    <Content Include="Documentation\Resources\MailNotifyConfigRegistration.jpg" />
+    <Content Include="Documentation\Resources\MailSettings.jpg" />
+    <Content Include="Documentation\Resources\NewControlOnTab.jpg" />
+    <Content Include="Documentation\Resources\NewControlOnTabOptions.jpg" />
+    <Content Include="Documentation\Resources\NotifyProviders.jpg" />
+    <Content Include="Documentation\Resources\ObserverAccountProvidersSection.jpg" />
+    <Content Include="Documentation\Resources\ObserverTab.jpg" />
+    <Content Include="Documentation\Resources\ObserverTabLabel.jpg" />
+    <Content Include="Documentation\Resources\OpenWITMenu.jpg" />
+    <Content Include="Documentation\Resources\SelectWorkItemType.jpg" />
+    <Content Include="Documentation\Resources\ServiceSettings.jpg" />
+    <Content Include="Documentation\Resources\Style.css" />
+    <Content Include="Documentation\Resources\TFSObserverAccountProviderConfigSection.jpg" />
+    <Content Include="Documentation\Resources\TFSObserverAccountProviderConfigSectionregistration.jpg" />
+    <Content Include="Documentation\Resources\WorkitemLayout.jpg" />
+    <Content Include="Documentation\Resources\XMLObserverAccountProviderConfig.jpg" />
+    <Content Include="Documentation\Resources\XMLObserverAccountProviderConfigRegistration.jpg" />
+    <Content Include="Documentation\Resources\XMLObserverAccountProviderFileSample.jpg" />
+    <Content Include="Documentation\Resources\XMLObserverAccountProviderRegistration.jpg" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Components\MSBuild.Community.Tasks.xsd" />
-    <None Include="Documentation\Installation.rtf" />
     <None Include="ReleaseStuff\CreateRelease.bat" />
     <None Include="ReleaseStuff\install.bat" />
     <None Include="ReleaseStuff\Release.target" />
     <None Include="ReleaseStuff\TFSWIWatcher.Service.exe.config" />
     <None Include="ReleaseStuff\uninstall.bat" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="obj\" />
   </ItemGroup>
 </Project>
