@@ -40,7 +40,12 @@
 		<Copy SourceFiles="$(WIWResources_ReleaseStuff_Path)install.bat" DestinationFolder="$(Release_Destination_Path)" />
 		<Copy SourceFiles="$(WIWResources_ReleaseStuff_Path)uninstall.bat" DestinationFolder="$(Release_Destination_Path)" />
 		<Copy SourceFiles="$(WIWResources_ReleaseStuff_Path)TFSWIWatcher.Service.exe.config" DestinationFolder="$(Release_Destination_Path)" />
-		<Copy SourceFiles="$(WIWResources_Documentation_Path)Installation.rtf" DestinationFolder="$(Release_Destination_Path)" />
+
+		<CreateItem Include="$(WIWResources_Documentation_Path)**">
+			<Output TaskParameter="Include" ItemName="DocumentationFiles"/>
+		</CreateItem>
+		
+		<Copy SourceFiles="@(DocumentationFiles)" DestinationFolder="$(Release_Destination_Path)Documentation\%(RecursiveDir)" />
 	</Target>
 
 	<Target Name="ZipIt">
@@ -55,5 +60,6 @@
 		</CreateItem>
 		
 		<Delete Files="@(FilesToDelete)" />
+		<RemoveDir Directories="$(Release_Destination_Path)\Documentation" />
 	</Target>
 </Project>
