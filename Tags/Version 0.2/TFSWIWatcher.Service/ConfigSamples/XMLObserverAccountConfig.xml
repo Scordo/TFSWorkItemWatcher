@@ -1,0 +1,5 @@
+﻿<Observers>
+	<Observer name="TFS Setup" workItemIDs="*"/>
+	<Observer name="Darren" workItemIDs="15, 11, 13, 2-6, 1"/>
+	<Observer name="Brian" workItemIDs="15, 2-7"/>
+</Observers>
