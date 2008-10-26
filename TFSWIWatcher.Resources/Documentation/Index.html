@@ -333,7 +333,11 @@
                     <strong>RegexOptions</strong> field is used to extract the account names from the field holding 
                     the account names. The regular expression used here extracts the account names 
                     line by line. If you want to change the regular expression please consider 
-                    having a group called <strong>user</strong> in your regular expression - this is mandatory.</p>
+                    having a group called <strong>user</strong> in your regular expression - this is mandatory. 
+                    The provider also checks the observers of the previous workitem revision and 
+                    will send a single notify mail to accounts that where removed from the list of 
+                    observers, so that those observers can detect an unwanted removal from the 
+                    list of observer.</p>
                     
                 <h3>1. XMLObserverAccountProvider</h3>
                 <p>
