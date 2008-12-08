@@ -115,6 +115,12 @@ namespace TFSWIWatcher.BL
         /// <returns></returns>
         public static string GetEMailOfUser(TeamFoundationServer server, string domainAndUsername)
         {
+			if (domainAndUsername != null && domainAndUsername.Contains("@"))
+			{
+				// username is an email address --> return the email
+				return domainAndUsername.Trim();
+			}
+
             IGroupSecurityService groupSecurityService = (IGroupSecurityService) server.GetService(typeof (IGroupSecurityService));
             Identity identity = groupSecurityService.ReadIdentity(SearchFactor.AccountName, domainAndUsername, QueryMembership.None);
 
