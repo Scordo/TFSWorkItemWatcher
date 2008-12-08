@@ -73,7 +73,7 @@ namespace TFSWIWatcher.BL.Providers
                 SendMail(observerAccount, email, context);
             }
             else
-                _log.WarnFormat("Could not determine email for Account {0}.", observerAccount);
+                _log.WarnFormat("Could not determine email for Account {0}. WorkItem-ID: {1}", observerAccount, context.WorkItemID);
 
             _log.DebugFormat("Finish: Notifying Account {0}.", observerAccount);
         }
