@@ -24,15 +24,9 @@ namespace TFSWIWatcher.BL
         public static ServiceHost CreateServiceHost(int port, ITFSNotification notificationInstance, string method)
         {
             ServiceHost serviceHost = new ServiceHost(notificationInstance);
-            WSHttpBinding webserviceBinding = new WSHttpBinding(SecurityMode.None);
 
-            BindingElementCollection bindingElementCollection = webserviceBinding.CreateBindingElements();
-            TextMessageEncodingBindingElement textMessageEncodingBindingElement = bindingElementCollection.Find<TextMessageEncodingBindingElement>();
-            textMessageEncodingBindingElement.MessageVersion = MessageVersion.Soap11;
-
-            CustomBinding binding = new CustomBinding(bindingElementCollection);
             string serviceEndPointURL = string.Format("http://{0}:{1}/{2}", Environment.MachineName, port, method);
-            serviceHost.AddServiceEndpoint(typeof(ITFSNotification), binding, serviceEndPointURL);
+            serviceHost.AddServiceEndpoint(typeof(ITFSNotification), new WSHttpBinding(SecurityMode.None), serviceEndPointURL);
 
             return serviceHost;
         }
