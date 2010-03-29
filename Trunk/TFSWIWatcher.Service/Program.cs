@@ -23,7 +23,7 @@ namespace TFSWIWatcher.Service
 
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 
-            if (args.Length > 0 && args[0] == "-c")
+            if (Environment.UserInteractive)
             {
                 _log.Debug("Running in console mode.");
 
