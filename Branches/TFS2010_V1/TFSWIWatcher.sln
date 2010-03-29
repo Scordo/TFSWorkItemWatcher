@@ -1,6 +1,6 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 10.00
-# Visual Studio 2008
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TFSWIWatcher.BL", "TFSWIWatcher.BL\TFSWIWatcher.BL.csproj", "{2C7C0C98-88FE-476C-9EB7-F5896F4895D2}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TFSWIWatcher.Service", "TFSWIWatcher.Service\TFSWIWatcher.Service.csproj", "{FD78E9CF-B934-43AC-8003-56B491CA7B44}"
