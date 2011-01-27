@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Reflection;
+using System.Text;
 using System.Xml;
 using System.Xml.Xsl;
 using System.Net.Mail;
@@ -114,7 +115,7 @@ namespace TFSWIWatcher.BL.Providers
                 _log.DebugFormat("Setting current directory to {0}", currentPath);
                 Directory.SetCurrentDirectory(currentPath);
 
-                using (TextReader styleTextReader = new StreamReader(_config.MailTransformationFile))
+                using (TextReader styleTextReader = new StreamReader(_config.MailTransformationFile, Encoding.UTF8))
                 {
                     using (XmlReader styleXmlReader = new XmlTextReader(styleTextReader))
                     {
