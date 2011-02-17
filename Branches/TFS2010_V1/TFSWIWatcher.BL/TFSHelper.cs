@@ -26,10 +26,27 @@ namespace TFSWIWatcher.BL
             ServiceHost serviceHost = new ServiceHost(notificationInstance);
 
             string serviceEndPointURL = string.Format("http://{0}:{1}/{2}", Environment.MachineName, port, method);
-            serviceHost.AddServiceEndpoint(typeof(ITFSNotification), new WSHttpBinding(SecurityMode.None), serviceEndPointURL);
+			serviceHost.AddServiceEndpoint(typeof(ITFSNotification), GetBinding(), serviceEndPointURL);
 
             return serviceHost;
         }
+
+		private static Binding GetBinding()
+		{
+			return new WSHttpBinding(SecurityMode.None)
+			{
+				MaxBufferPoolSize = Int32.MaxValue,
+				MaxReceivedMessageSize = Int32.MaxValue,
+			    ReaderQuotas = new XmlDictionaryReaderQuotas
+								{
+			                        MaxDepth = Int32.MaxValue,
+			                        MaxStringContentLength = Int32.MaxValue,
+			                        MaxArrayLength = Int32.MaxValue,
+			                        MaxBytesPerRead = Int32.MaxValue,
+			                        MaxNameTableCharCount = Int32.MaxValue
+			                    },
+			};
+		}
 
         /// <summary>
         /// Method for registering a WS at the TFS server.
