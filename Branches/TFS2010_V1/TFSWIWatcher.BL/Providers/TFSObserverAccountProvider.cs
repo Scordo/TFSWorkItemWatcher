@@ -38,7 +38,19 @@ namespace TFSWIWatcher.BL.Providers
 
         List<string> IObserverAccountProvider.GetObservers(WorkItemChangedContext context)
         {
-            _log.Debug("Start: Getting List of Observers.");
+			_log.Debug("Start: Getting List of Observers.");
+			string workitemType = context.WorkItemChangeInfo.CoreFields.StringFields.First(w => w.ReferenceName == "System.WorkItemType").NewValue;
+        	string projectName = context.WorkItemChangeInfo.PortfolioProject;
+            
+			_log.DebugFormat("Start: Checking if workitem  of type {0} in project {1} should be observed.", workitemType, projectName);
+
+			if (!_config.Projects.IsWorkitemTypeSupported(projectName, workitemType))
+			{
+				_log.DebugFormat("Finish: Workitem  of type {0} in project {1} is not configured for being observed.", workitemType, projectName);
+				return new List<string>();
+			}
+
+			_log.DebugFormat("Finish: Workitem  of type {0} in project {1} is configured for being observed.", workitemType, projectName);
             _log.DebugFormat("Start: Getting WorkItem with ID {0} and Revision {1}.", context.WorkItemID, context.WorkItemRevision);
 
             WorkItem workItem;

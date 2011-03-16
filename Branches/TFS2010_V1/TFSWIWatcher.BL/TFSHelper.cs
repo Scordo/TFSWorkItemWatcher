@@ -5,6 +5,7 @@ using System.ServiceModel.Channels;
 using System.Xml;
 using System.Xml.Serialization;
 using Microsoft.TeamFoundation.Client;
+using Microsoft.TeamFoundation.Framework.Client;
 using Microsoft.TeamFoundation.Server;
 using Microsoft.TeamFoundation.WorkItemTracking.Client;
 

@@ -36,6 +36,8 @@ namespace TFSWIWatcher.BL.Configuration
             private set;
         }
 
+		public TfsProjectConfigurationList Projects { get; private set; }
+
         #endregion
 
         #region Constructor
@@ -71,6 +73,8 @@ namespace TFSWIWatcher.BL.Configuration
                 throw new ConfigurationErrorsException("Could not find RegexOptions-Node in TFSObserverAccountConfig-Node.");
 
             RegexOptions = ParseRegexOptions(regexOptionsNode.InnerText);
+
+        	Projects = new TfsProjectConfigurationList(section.SelectSingleNode("Projects"));
         }
 
         static TFSObserverAccountConfigurationSection()
@@ -115,7 +119,7 @@ namespace TFSWIWatcher.BL.Configuration
 
         private static RegexOptions ParseRegexOptions(string optionString)
         {
-            RegexOptions result = System.Text.RegularExpressions.RegexOptions.None;
+            RegexOptions result = RegexOptions.None;
 
             string[] options = optionString.ToUpper().Split(new[] {'|'}, StringSplitOptions.RemoveEmptyEntries);
 
