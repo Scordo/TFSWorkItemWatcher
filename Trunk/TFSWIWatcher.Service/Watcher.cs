@@ -113,7 +113,7 @@ namespace TFSWIWatcher.Service
 
         #region ITFSNotification Members
 
-        void ITFSNotification.Notify(string eventXml, string tfsIdentityXml, SubscriptionInfo objSubscriptionInfo)
+        void ITFSNotification.Notify(string eventXml, string tfsIdentityXml)
         {
             _log.Debug("Start: Creating context");
             WorkItemChangedContext context = GetContext(eventXml, tfsIdentityXml);

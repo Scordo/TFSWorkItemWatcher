@@ -5,6 +5,7 @@ using System.ServiceModel.Channels;
 using System.Xml;
 using System.Xml.Serialization;
 using Microsoft.TeamFoundation.Client;
+using Microsoft.TeamFoundation.Framework.Client;
 using Microsoft.TeamFoundation.Server;
 using Microsoft.TeamFoundation.WorkItemTracking.Client;
 
@@ -24,18 +25,29 @@ namespace TFSWIWatcher.BL
         public static ServiceHost CreateServiceHost(int port, ITFSNotification notificationInstance, string method)
         {
             ServiceHost serviceHost = new ServiceHost(notificationInstance);
-            WSHttpBinding webserviceBinding = new WSHttpBinding(SecurityMode.None);
 
-            BindingElementCollection bindingElementCollection = webserviceBinding.CreateBindingElements();
-            TextMessageEncodingBindingElement textMessageEncodingBindingElement = bindingElementCollection.Find<TextMessageEncodingBindingElement>();
-            textMessageEncodingBindingElement.MessageVersion = MessageVersion.Soap11;
-
-            CustomBinding binding = new CustomBinding(bindingElementCollection);
             string serviceEndPointURL = string.Format("http://{0}:{1}/{2}", Environment.MachineName, port, method);
-            serviceHost.AddServiceEndpoint(typeof(ITFSNotification), binding, serviceEndPointURL);
+			serviceHost.AddServiceEndpoint(typeof(ITFSNotification), GetBinding(), serviceEndPointURL);
 
             return serviceHost;
         }
+
+		private static Binding GetBinding()
+		{
+			return new WSHttpBinding(SecurityMode.None)
+			{
+				MaxBufferPoolSize = Int32.MaxValue,
+				MaxReceivedMessageSize = Int32.MaxValue,
+			    ReaderQuotas = new XmlDictionaryReaderQuotas
+								{
+			                        MaxDepth = Int32.MaxValue,
+			                        MaxStringContentLength = Int32.MaxValue,
+			                        MaxArrayLength = Int32.MaxValue,
+			                        MaxBytesPerRead = Int32.MaxValue,
+			                        MaxNameTableCharCount = Int32.MaxValue
+			                    },
+			};
+		}
 
         /// <summary>
         /// Method for registering a WS at the TFS server.
