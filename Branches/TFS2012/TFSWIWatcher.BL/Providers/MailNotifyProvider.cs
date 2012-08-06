@@ -66,7 +66,7 @@ namespace TFSWIWatcher.BL.Providers
                 email = _config.DevMail;
             }
             else
-                email = TFSHelper.GetEMailOfUser(context.TeamServer, observerAccount.Trim());
+                email = TFSHelper.GetEMailOfUser(context.TeamProjectCollection, observerAccount.Trim());
 
             if (email != null && email.Trim().Length > 0)
             {

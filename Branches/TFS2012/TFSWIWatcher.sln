@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TFSWIWatcher.BL", "TFSWIWatcher.BL\TFSWIWatcher.BL.csproj", "{2C7C0C98-88FE-476C-9EB7-F5896F4895D2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TFSWIWatcher.Service", "TFSWIWatcher.Service\TFSWIWatcher.Service.csproj", "{FD78E9CF-B934-43AC-8003-56B491CA7B44}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TFSWIWatcher.Resources", "TFSWIWatcher.Resources\TFSWIWatcher.Resources.csproj", "{5D6A4AD3-42C8-4B40-8EE4-6E49405755A6}"
 EndProject
 Global
@@ -12,15 +10,12 @@ Global
 		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
 		SccLocalPath0 = .
 		SccLocalPath1 = TFSWIWatcher.BL
-		SccLocalPath2 = TFSWIWatcher.Service
-		SccLocalPath3 = TFSWIWatcher.Resources
-		SccNumberOfProjects = 4
+		SccLocalPath2 = TFSWIWatcher.Resources
+		SccNumberOfProjects = 3
 		SccProjectName1 = TFSWIWatcher.BL
-		SccProjectName2 = TFSWIWatcher.Service
-		SccProjectName3 = TFSWIWatcher.Resources
+		SccProjectName2 = TFSWIWatcher.Resources
 		SccProjectUniqueName1 = TFSWIWatcher.BL\\TFSWIWatcher.BL.csproj
-		SccProjectUniqueName2 = TFSWIWatcher.Service\\TFSWIWatcher.Service.csproj
-		SccProjectUniqueName3 = TFSWIWatcher.Resources\\TFSWIWatcher.Resources.csproj
+		SccProjectUniqueName2 = TFSWIWatcher.Resources\\TFSWIWatcher.Resources.csproj
 		SccTeamFoundationServer = https://tfs.codeplex.com/tfs/tfs08
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -42,14 +37,6 @@ Global
 		{5D6A4AD3-42C8-4B40-8EE4-6E49405755A6}.Debug|X86.ActiveCfg = Debug|Any CPU
 		{5D6A4AD3-42C8-4B40-8EE4-6E49405755A6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5D6A4AD3-42C8-4B40-8EE4-6E49405755A6}.Release|X86.ActiveCfg = Release|Any CPU
-		{FD78E9CF-B934-43AC-8003-56B491CA7B44}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{FD78E9CF-B934-43AC-8003-56B491CA7B44}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{FD78E9CF-B934-43AC-8003-56B491CA7B44}.Debug|X86.ActiveCfg = Debug|Any CPU
-		{FD78E9CF-B934-43AC-8003-56B491CA7B44}.Debug|X86.Build.0 = Debug|Any CPU
-		{FD78E9CF-B934-43AC-8003-56B491CA7B44}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{FD78E9CF-B934-43AC-8003-56B491CA7B44}.Release|Any CPU.Build.0 = Release|Any CPU
-		{FD78E9CF-B934-43AC-8003-56B491CA7B44}.Release|X86.ActiveCfg = Release|Any CPU
-		{FD78E9CF-B934-43AC-8003-56B491CA7B44}.Release|X86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
