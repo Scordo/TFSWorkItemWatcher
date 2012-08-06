@@ -52,10 +52,7 @@
     <Content Include="Components\ICSharpCode.SharpZipLib.dll" />
     <Content Include="Components\log4net.dll" />
     <Content Include="Components\log4net.xml" />
-    <Content Include="Components\Microsoft.TeamFoundation.Client.dll" />
-    <Content Include="Components\Microsoft.TeamFoundation.Common.dll" />
-    <Content Include="Components\Microsoft.TeamFoundation.dll" />
-    <Content Include="Components\Microsoft.TeamFoundation.WorkItemTracking.Client.dll" />
+    <Content Include="Components\Microsoft.TeamFoundation.Framework.Server.dll" />
     <Content Include="Components\MSBuild.Community.Tasks.dll" />
     <Content Include="Components\MSBuild.Community.Tasks.xml" />
     <Content Include="Documentation\Index.html" />
@@ -100,7 +97,5 @@
     <None Include="ReleaseStuff\TFSWIWatcher.Service.exe.config" />
     <None Include="ReleaseStuff\uninstall.bat" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="obj\" />
-  </ItemGroup>
+  <ItemGroup />
 </Project>
