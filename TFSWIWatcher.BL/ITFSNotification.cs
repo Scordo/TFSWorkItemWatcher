@@ -14,9 +14,8 @@ namespace TFSWIWatcher.BL
         /// </summary>
         /// <param name="eventXml">The event as xml string.</param>
         /// <param name="tfsIdentityXml">An identity xml string.</param>
-        /// <param name="objSubscriptionInfo">An additional subscription info.</param>
         [OperationContract(Action = "http://schemas.microsoft.com/TeamFoundation/2005/06/Services/Notification/03/Notify", ReplyAction = "*")]
         [XmlSerializerFormat(Style = OperationFormatStyle.Document)]
-        void Notify(string eventXml, string tfsIdentityXml, SubscriptionInfo objSubscriptionInfo);
+        void Notify(string eventXml, string tfsIdentityXml);
     }
 }

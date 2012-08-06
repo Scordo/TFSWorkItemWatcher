@@ -4,6 +4,7 @@ using System.Text.RegularExpressions;
 using log4net;
 using Microsoft.TeamFoundation.WorkItemTracking.Client;
 using TFSWIWatcher.BL.Configuration;
+using System.Linq;
 
 namespace TFSWIWatcher.BL.Providers
 {
@@ -37,8 +38,20 @@ namespace TFSWIWatcher.BL.Providers
 
         List<string> IObserverAccountProvider.GetObservers(WorkItemChangedContext context)
         {
-            _log.Debug("Start: Getting List of Observers.");
-            _log.DebugFormat("Start: Getting WorkItem with ID {0}.", context.WorkItemID);
+			_log.Debug("Start: Getting List of Observers.");
+			string workitemType = context.WorkItemChangeInfo.CoreFields.StringFields.First(w => w.ReferenceName == "System.WorkItemType").NewValue;
+        	string projectName = context.WorkItemChangeInfo.PortfolioProject;
+            
+			_log.DebugFormat("Start: Checking if workitem  of type {0} in project {1} should be observed.", workitemType, projectName);
+
+			if (!_config.Projects.IsWorkitemTypeSupported(projectName, workitemType))
+			{
+				_log.DebugFormat("Finish: Workitem  of type {0} in project {1} is not configured for being observed.", workitemType, projectName);
+				return new List<string>();
+			}
+
+			_log.DebugFormat("Finish: Workitem  of type {0} in project {1} is configured for being observed.", workitemType, projectName);
+            _log.DebugFormat("Start: Getting WorkItem with ID {0} and Revision {1}.", context.WorkItemID, context.WorkItemRevision);
 
             WorkItem workItem;
 
@@ -52,42 +65,39 @@ namespace TFSWIWatcher.BL.Providers
                 throw;
             }
 
-            _log.DebugFormat("Finish: Getting WorkItem with ID {0}.", context.WorkItemID);
-
-
+            _log.DebugFormat("Finish: Getting WorkItem with ID {0} and Revision {1}.", context.WorkItemID, context.WorkItemRevision);
             _log.DebugFormat("Getting field containing observers from workitem. Fieldname is: {0}", _config.ObserversFieldName);
-            Field currentObserverField = workItem.Revisions[context.WorkItemRevision - 1].Fields[_config.ObserversFieldName];
 
-            Field previousObserverField = null;
+			int intCurrentRevisionIndex = context.WorkItemRevision - 1;
+			HashSet<string> uniqueObservers = new HashSet<string>();
 
-            if (workItem.Revisions.Count > 1)
-                previousObserverField = workItem.Revisions[context.WorkItemRevision - 2].Fields[_config.ObserversFieldName];
+			if (workItem.Revisions.Count > intCurrentRevisionIndex)
+			{
+				Revision objCurrentRevision = workItem.Revisions[intCurrentRevisionIndex];
 
-            HashSet<string> uniqueObservers = null;
+				if (objCurrentRevision.Fields.Contains(_config.ObserversFieldName))
+				{
+					Field currentObserverField = objCurrentRevision.Fields[_config.ObserversFieldName];
+					uniqueObservers = new HashSet<string>(GetObserversFromText(Convert.ToString(currentObserverField.Value)));
+					int intPreviousRevisionIndex = intCurrentRevisionIndex - 1;
 
-            if (currentObserverField != null)
-            {
-                uniqueObservers = new HashSet<string>(GetObserversFromText(Convert.ToString(currentObserverField.Value)));
-
-                if (previousObserverField != null)
-                    uniqueObservers.UnionWith(GetObserversFromText(Convert.ToString(previousObserverField.Value)));
-            }
-            else
-                _log.WarnFormat("Could not find field containing observers. Fieldname is: {0}", _config.ObserversFieldName);
+					if (workItem.Revisions.Count > intPreviousRevisionIndex && intPreviousRevisionIndex >= 0)
+					{
+						Field previousObserverField = workItem.Revisions[intPreviousRevisionIndex].Fields[_config.ObserversFieldName];
+						uniqueObservers.UnionWith(GetObserversFromText(Convert.ToString(previousObserverField.Value)));
+					}
+					else
+						_log.Info("No previous workitem revision found.");	
+				}
+				else
+					_log.WarnFormat("Could not find field containing observers. Fieldname is: {0}", _config.ObserversFieldName);
+			}
+			else
+				_log.Warn("Could not find current revision data.");
 
             _log.Debug("Finish: Getting List of Observers.");
 
-            List<string> result = new List<string>();
-
-            if (uniqueObservers != null)
-            {
-                foreach (string observer in uniqueObservers)
-                {
-                    result.Add(observer);
-                }
-            }
-
-            return result;
+			return uniqueObservers.ToList();
         }
 
         private List<string> GetObserversFromText(string observerString)

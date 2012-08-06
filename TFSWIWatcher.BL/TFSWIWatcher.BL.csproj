@@ -86,27 +86,16 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\TFSWIWatcher.Resources\Components\log4net.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.TeamFoundation, Version=9.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=x86">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\TFSWIWatcher.Resources\Components\Microsoft.TeamFoundation.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.TeamFoundation.Client, Version=9.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=x86">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\TFSWIWatcher.Resources\Components\Microsoft.TeamFoundation.Client.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.TeamFoundation.Common, Version=9.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=x86">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\TFSWIWatcher.Resources\Components\Microsoft.TeamFoundation.Common.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.TeamFoundation.WorkItemTracking.Client, Version=9.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=x86">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\TFSWIWatcher.Resources\Components\Microsoft.TeamFoundation.WorkItemTracking.Client.dll</HintPath>
-    </Reference>
+    <Reference Include="Microsoft.TeamFoundation, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.TeamFoundation.Client, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.TeamFoundation.Common, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.TeamFoundation.WorkItemTracking.Client, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.ServiceModel">
       <RequiredTargetFramework>3.0</RequiredTargetFramework>
     </Reference>
@@ -124,6 +113,8 @@
     <Compile Include="Configuration\ConfigSettingsConfigurationSection.cs" />
     <Compile Include="Configuration\ProviderConfigSettings.cs" />
     <Compile Include="Configuration\ProviderConfigSettingsCollection.cs" />
+    <Compile Include="Configuration\TfsProjectConfiguration.cs" />
+    <Compile Include="Configuration\TfsProjectConfigurationList.cs" />
     <Compile Include="Configuration\XMLObserverAccountProviderConfigurationSection.cs" />
     <Compile Include="Instancer.cs" />
     <Compile Include="ITFSNotification.cs" />
