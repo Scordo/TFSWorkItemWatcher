@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.IO;
 using System.Linq;
 using log4net;
 using Microsoft.TeamFoundation.Client;
@@ -42,18 +43,6 @@ namespace TFSWIWatcher.BL.Configuration
         public bool IsDev
         {
             get { return (bool) base["isDev"]; }
-        }
-
-        [ConfigurationProperty("teamServer", IsRequired = true)]
-        public string TeamServer
-        {
-            get { return (string) base["teamServer"]; }
-        }
-
-        [ConfigurationProperty("localServicePort", IsRequired = false, DefaultValue = 50782)]
-        public int LocalServicePort
-        {
-            get { return (int) base["localServicePort"]; }
         }
 
         #endregion
@@ -138,7 +127,9 @@ namespace TFSWIWatcher.BL.Configuration
         {
             try
             {
-                ConfigSettingsConfigurationSection config = (ConfigSettingsConfigurationSection)ConfigurationManager.GetSection(sectionName);
+                System.Configuration.Configuration configuration = ConfigurationManager.OpenExeConfiguration(typeof(ConfigSettingsConfigurationSection).Assembly.Location);
+
+                ConfigSettingsConfigurationSection config = (ConfigSettingsConfigurationSection)configuration.GetSection(sectionName);
 
                 if (config == null)
                 {
@@ -150,7 +141,7 @@ namespace TFSWIWatcher.BL.Configuration
             }
             catch (Exception ex)
             {
-                _log.ErrorFormat("Error while reading ConfigSettings from config file: {0}", sectionName, ex);
+                _log.Error(string.Format("Error while reading ConfigSettings from config file: {0}", sectionName), ex);
                 throw;
             }
         }

@@ -3,9 +3,11 @@ using System.IO;
 using System.Reflection;
 using System.Text;
 using System.Xml;
+using System.Xml.Serialization;
 using System.Xml.Xsl;
 using System.Net.Mail;
 using System.Collections.Generic;
+using Microsoft.TeamFoundation.WorkItemTracking.Server;
 using log4net;
 using TFSWIWatcher.BL.Configuration;
 
@@ -90,7 +92,7 @@ namespace TFSWIWatcher.BL.Providers
 
                 //set the content
                 mail.Subject = string.Format("Workitem {0} [{1}] has changed...", context.WorkItemID, context.WorkItemChangeInfo.WorkItemTitle);
-                mail.Body = GetTransformedHtml(context.NotifyXML);
+                mail.Body = GetTransformedHtml(context.WorkItemChangedEvent);
                 mail.IsBodyHtml = true;
 
                 //send the message
@@ -107,7 +109,7 @@ namespace TFSWIWatcher.BL.Providers
             _log.DebugFormat("Finish: Sending mail to account {0} using email {1}.", observerAccount, email);
         }
 
-        private string GetTransformedHtml(string xml)
+        private string GetTransformedHtml(WorkItemChangedEvent workItemChangedEvent)
         {
             try
             {
@@ -119,7 +121,7 @@ namespace TFSWIWatcher.BL.Providers
                 {
                     using (XmlReader styleXmlReader = new XmlTextReader(styleTextReader))
                     {
-                        using (TextReader workitemTextReader = new StringReader(xml))
+                        using (TextReader workitemTextReader = new StringReader(SerializeToXml(workItemChangedEvent)))
                         {
                             using (XmlReader workitemXmlReader = new XmlTextReader(workitemTextReader))
                             {
@@ -144,6 +146,19 @@ namespace TFSWIWatcher.BL.Providers
             {
                 _log.ErrorFormat("Error while transforming notify-xml to html using file {0}: {1}", _config.MailTransformationFile, ex);
                 throw;
+            }
+        }
+
+        private string SerializeToXml(object instance)
+        {
+            if (instance == null)
+                throw new ArgumentNullException("instance");
+
+            using (StringWriter writer = new StringWriter())
+            {
+                new XmlSerializer(instance.GetType()).Serialize(writer, instance);
+
+                return writer.ToString();
             }
         }
 

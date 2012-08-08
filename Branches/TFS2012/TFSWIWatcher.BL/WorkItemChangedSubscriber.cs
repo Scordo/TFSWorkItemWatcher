@@ -3,16 +3,23 @@ using System.Collections.Generic;
 using Microsoft.TeamFoundation.Client;
 using Microsoft.TeamFoundation.Common;
 using Microsoft.TeamFoundation.Framework.Server;
+using Microsoft.TeamFoundation.WorkItemTracking.Client;
 using Microsoft.TeamFoundation.WorkItemTracking.Server;
 using TFSWIWatcher.BL.Configuration;
 using TFSWIWatcher.BL.Providers;
 using log4net;
 using System.Linq;
+using log4net.Config;
 
 namespace TFSWIWatcher.BL
 {
     public class WorkItemChangedSubscriber : ISubscriber
     {
+        static WorkItemChangedSubscriber()
+        {
+            XmlConfigurator.Configure();
+        }
+
         #region ISubscriber Implementation
 
         string ISubscriber.Name
@@ -107,7 +114,8 @@ namespace TFSWIWatcher.BL
                 int workitemRevision = workItemChangedEvent.CoreFields.IntegerFields.First(x => x.ReferenceName == "System.Rev").NewValue;
 
                 TfsTeamProjectCollection teamProjectCollection = GetTeamProjectCollection(requestContext);
-                // WorkItemStore workItemStore = teamProjectCollection.GetService<WorkItemStore>();
+                //WorkItemStore workItemStore = teamProjectCollection.GetService<WorkItemStore>();
+
                 WorkItemChangeInfo workItemChangeInfo = new WorkItemChangeInfo
                                                             {
                                                                 PortfolioProject = workItemChangedEvent.PortfolioProject,
@@ -115,7 +123,7 @@ namespace TFSWIWatcher.BL
                                                                 WorkitemType = workItemChangedEvent.CoreFields.StringFields.First(w => w.ReferenceName == "System.WorkItemType").NewValue
                                                             };
 
-                return new WorkItemChangedContext(null /* TODO: pass xml here */, workItemChangeInfo, teamProjectCollection, workitemId, workitemRevision, ConfigSettings);
+                return new WorkItemChangedContext(workItemChangeInfo, teamProjectCollection, workitemId, workitemRevision, ConfigSettings, workItemChangedEvent);
             }
             catch (Exception ex)
             {
@@ -123,8 +131,6 @@ namespace TFSWIWatcher.BL
                 throw;
             }
         }
-
-        
 
         private static ConfigSettingsConfigurationSection GetSettingsFromConfig()
         {
