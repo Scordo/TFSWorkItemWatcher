@@ -2,12 +2,12 @@
 	<UsingTask TaskName="Zip" AssemblyFile="..\Components\MSBuild.Community.Tasks.dll" />
 
 	<PropertyGroup>
-		<ReleaseVersion>V0_2</ReleaseVersion>
+		<ReleaseVersion>V1_12</ReleaseVersion>
 		<Release_Destination_Base_Path>C:\Releases\TFSWIWatcher\</Release_Destination_Base_Path>
 		<Release_Destination_Path>$(Release_Destination_Base_Path)$(ReleaseVersion)\</Release_Destination_Path>
 		<Solution_Root_Path>..\..\</Solution_Root_Path>
 		<Configuration>Release</Configuration>
-		<WIWService_Bin_Path>$(Solution_Root_Path)TFSWIWatcher.Service\bin\$(Configuration)\</WIWService_Bin_Path>
+		<WIWPlugin_Bin_Path>$(Solution_Root_Path)TFSWIWatcher.BL\bin\$(Configuration)\</WIWPlugin_Bin_Path>
 		<WIWResources_Path>$(Solution_Root_Path)TFSWIWatcher.Resources\</WIWResources_Path>
 		<WIWResources_ReleaseStuff_Path>$(WIWResources_Path)ReleaseStuff\</WIWResources_ReleaseStuff_Path>
 		<WIWResources_Documentation_Path>$(WIWResources_Path)Documentation\</WIWResources_Documentation_Path>
@@ -29,7 +29,7 @@
 	<Target Name="CopyBuildOutput">
 		<RemoveDir Directories="$(Release_Destination_Path)" ContinueOnError="true" />
 
-		<CreateItem Include="$(WIWService_Bin_Path)**" Exclude="$(WIWService_Bin_Path)*.xml; $(WIWService_Bin_Path)*vshost*; $(WIWService_Bin_Path)*.pdb; $(WIWService_Bin_Path)*.config; $(WIWService_Bin_Path)*.txt">
+		<CreateItem Include="$(WIWPlugin_Bin_Path)**" Exclude="$(WIWPlugin_Bin_Path)*Microsoft*; $(WIWPlugin_Bin_Path)*.xml; $(WIWPlugin_Bin_Path)*vshost*; $(WIWPlugin_Bin_Path)*.pdb; $(WIWPlugin_Bin_Path)*.config; $(WIWPlugin_Bin_Path)*.txt">
 			<Output TaskParameter="Include" ItemName="WIWBuildOutput"/>
 		</CreateItem>
 
@@ -37,9 +37,7 @@
 	</Target>
 
 	<Target Name="CopyAdditionalStuff">
-		<Copy SourceFiles="$(WIWResources_ReleaseStuff_Path)install.bat" DestinationFolder="$(Release_Destination_Path)" />
-		<Copy SourceFiles="$(WIWResources_ReleaseStuff_Path)uninstall.bat" DestinationFolder="$(Release_Destination_Path)" />
-		<Copy SourceFiles="$(WIWResources_ReleaseStuff_Path)TFSWIWatcher.Service.exe.config" DestinationFolder="$(Release_Destination_Path)" />
+		<Copy SourceFiles="$(WIWResources_ReleaseStuff_Path)TFSWIWatcher.BL.dll.config" DestinationFolder="$(Release_Destination_Path)" />
 
 		<CreateItem Include="$(WIWResources_Documentation_Path)**">
 			<Output TaskParameter="Include" ItemName="DocumentationFiles"/>

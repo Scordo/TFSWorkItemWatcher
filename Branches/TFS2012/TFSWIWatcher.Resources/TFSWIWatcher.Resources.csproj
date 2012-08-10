@@ -89,17 +89,12 @@
     <Content Include="Documentation\Resources\XMLObserverAccountProviderConfigRegistration.jpg" />
     <Content Include="Documentation\Resources\XMLObserverAccountProviderFileSample.jpg" />
     <Content Include="Documentation\Resources\XMLObserverAccountProviderRegistration.jpg" />
-    <Content Include="ReleaseStuff\WorkItemChangedEvent.xsl">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
   </ItemGroup>
   <ItemGroup>
     <None Include="Components\MSBuild.Community.Tasks.xsd" />
     <None Include="ReleaseStuff\CreateRelease.bat" />
-    <None Include="ReleaseStuff\install.bat" />
     <None Include="ReleaseStuff\Release.target" />
     <None Include="ReleaseStuff\TFSWIWatcher.BL.dll.config" />
-    <None Include="ReleaseStuff\uninstall.bat" />
   </ItemGroup>
   <ItemGroup />
 </Project>
