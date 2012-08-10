@@ -133,12 +133,16 @@
     <Compile Include="Configuration\TFSObserverAccountConfigSettings.cs" />
     <Compile Include="Providers\TFSObserverAccountProvider.cs" />
     <Compile Include="TFSHelper.cs" />
+    <Compile Include="TfsXmlResolver.cs" />
+    <Compile Include="Util.cs" />
     <Compile Include="WorkItemChangedContext.cs" />
     <Compile Include="WorkItemChangedSubscriber.cs" />
     <Compile Include="WorkItemChangeInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App_Template.config" />
+    <None Include="TFSWIWatcher.BL.dll.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="ArchitectureOverview.vsd" />
   </ItemGroup>
   <ItemGroup>

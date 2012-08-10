@@ -154,7 +154,7 @@ namespace TFSWIWatcher.BL
 
         private static SubscriberConfig GetSettingsFromConfig()
         {
-            return SubscriberConfigDeserializer.LoadFromFile(new Uri(typeof(WorkItemChangedSubscriber).Assembly.CodeBase).LocalPath + ".config");
+            return SubscriberConfigDeserializer.LoadFromFile(Util.GetPluginAssemblyFilePath() + ".config");
         }
 
         private static List<IObserverAccountProvider> GetObserverAccountProviders()

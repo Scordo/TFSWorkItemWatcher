@@ -89,7 +89,6 @@
     <Content Include="Documentation\Resources\XMLObserverAccountProviderConfigRegistration.jpg" />
     <Content Include="Documentation\Resources\XMLObserverAccountProviderFileSample.jpg" />
     <Content Include="Documentation\Resources\XMLObserverAccountProviderRegistration.jpg" />
-    <Content Include="ReleaseStuff\ConfigSamples\XMLObserverAccountConfig.xml" />
     <Content Include="ReleaseStuff\WorkItemChangedEvent.xsl">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -99,7 +98,7 @@
     <None Include="ReleaseStuff\CreateRelease.bat" />
     <None Include="ReleaseStuff\install.bat" />
     <None Include="ReleaseStuff\Release.target" />
-    <None Include="ReleaseStuff\TFSWIWatcher.Service.exe.config" />
+    <None Include="ReleaseStuff\TFSWIWatcher.BL.dll.config" />
     <None Include="ReleaseStuff\uninstall.bat" />
   </ItemGroup>
   <ItemGroup />

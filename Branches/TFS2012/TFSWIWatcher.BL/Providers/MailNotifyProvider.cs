@@ -3,6 +3,7 @@ using System.IO;
 using System.Text;
 using System.Xml;
 using System.Xml.Linq;
+using System.Xml.Resolvers;
 using System.Xml.Serialization;
 using System.Xml.Xsl;
 using System.Net.Mail;
@@ -126,8 +127,7 @@ namespace TFSWIWatcher.BL.Providers
                                     using (XmlWriter resultXmlWriter = new XmlTextWriter(resultTextWriter))
                                     {
                                         XslCompiledTransform xslCompiledTransform = new XslCompiledTransform();
-                                        xslCompiledTransform.Load(styleXmlReader);
-
+                                        xslCompiledTransform.Load(styleXmlReader, null, new TfsXmlResolver(_config.MailTransformationFile));
                                         xslCompiledTransform.Transform(workitemXmlReader, resultXmlWriter);
 
                                         return resultTextWriter.ToString();
