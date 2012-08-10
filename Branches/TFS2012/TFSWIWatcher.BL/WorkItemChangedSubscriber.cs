@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using Microsoft.TeamFoundation.Client;
 using Microsoft.TeamFoundation.Common;
 using Microsoft.TeamFoundation.Framework.Server;
@@ -16,7 +17,7 @@ namespace TFSWIWatcher.BL
     {
         static WorkItemChangedSubscriber()
         {
-            XmlConfigurator.Configure();
+            XmlConfigurator.Configure(new FileInfo(Util.GetPluginAssemblyFilePath()+".logconfig"));
         }
 
         #region ISubscriber Implementation

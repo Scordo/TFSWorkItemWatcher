@@ -38,6 +38,7 @@
 
 	<Target Name="CopyAdditionalStuff">
 		<Copy SourceFiles="$(WIWResources_ReleaseStuff_Path)TFSWIWatcher.BL.dll.config" DestinationFolder="$(Release_Destination_Path)" />
+    <Copy SourceFiles="$(WIWResources_ReleaseStuff_Path)TFSWIWatcher.BL.dll.logconfig" DestinationFolder="$(Release_Destination_Path)" />
 
 		<CreateItem Include="$(WIWResources_Documentation_Path)**">
 			<Output TaskParameter="Include" ItemName="DocumentationFiles"/>

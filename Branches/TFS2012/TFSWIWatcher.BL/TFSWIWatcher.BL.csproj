@@ -144,6 +144,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="ArchitectureOverview.vsd" />
+    <None Include="TFSWIWatcher.BL.dll.logconfig">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="WorkItemRelated\" />

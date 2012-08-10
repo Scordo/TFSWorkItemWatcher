@@ -95,6 +95,9 @@
     <None Include="ReleaseStuff\CreateRelease.bat" />
     <None Include="ReleaseStuff\Release.target" />
     <None Include="ReleaseStuff\TFSWIWatcher.BL.dll.config" />
+    <None Include="ReleaseStuff\TFSWIWatcher.BL.dll.logconfig">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup />
 </Project>
