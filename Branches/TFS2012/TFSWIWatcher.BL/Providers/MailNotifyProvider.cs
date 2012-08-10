@@ -3,11 +3,13 @@ using System.IO;
 using System.Text;
 using System.Xml;
 using System.Xml.Linq;
-using System.Xml.Resolvers;
 using System.Xml.Serialization;
 using System.Xml.Xsl;
 using System.Net.Mail;
 using System.Collections.Generic;
+using Microsoft.TeamFoundation.Client;
+using Microsoft.TeamFoundation.Framework.Client;
+using Microsoft.TeamFoundation.Server;
 using Microsoft.TeamFoundation.WorkItemTracking.Server;
 using log4net;
 using TFSWIWatcher.BL.Configuration;
@@ -69,7 +71,7 @@ namespace TFSWIWatcher.BL.Providers
                 email = _config.DevMail;
             }
             else
-                email = TFSHelper.GetEMailOfUser(context.TeamProjectCollection, observerAccount.Trim());
+                email = GetEMailOfUser(context.TeamProjectCollection, observerAccount.Trim());
 
             if (email != null && email.Trim().Length > 0)
             {
@@ -156,6 +158,26 @@ namespace TFSWIWatcher.BL.Providers
 
                 return writer.ToString();
             }
+        }
+
+        /// <summary>
+        /// Gets the E mail of user.
+        /// </summary>
+        /// <param name="projectCollection">The project collection.</param>
+        /// <param name="domainAndUsername">The domain and username.</param>
+        /// <returns></returns>
+        public static string GetEMailOfUser(TfsTeamProjectCollection projectCollection, string domainAndUsername)
+        {
+            if (domainAndUsername != null && domainAndUsername.Contains("@"))
+            {
+                // username is an email address --> return the email
+                return domainAndUsername.Trim();
+            }
+
+            IGroupSecurityService groupSecurityService = (IGroupSecurityService)projectCollection.GetService(typeof(IIdentityManagementService));
+            Identity identity = groupSecurityService.ReadIdentity(SearchFactor.AccountName, domainAndUsername, QueryMembership.None);
+
+            return (identity != null) ? identity.MailAddress : null;
         }
 
         #endregion

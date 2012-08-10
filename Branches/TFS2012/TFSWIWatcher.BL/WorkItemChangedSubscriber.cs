@@ -151,7 +151,7 @@ namespace TFSWIWatcher.BL
             foreach (ProviderConfigSettings providerConfigSettings in ConfigSettings.ObserverAccountProviders)
             {
                 Log.Debug(string.Format("Instantiating IObserverAccountProvider {0}", providerConfigSettings.ProviderClass));
-                IObserverAccountProvider observerAccountProvider = Instancer.GetInstanceOfInterface<IObserverAccountProvider>(providerConfigSettings.AssemblyName, providerConfigSettings.ProviderClass);
+                IObserverAccountProvider observerAccountProvider = Util.GetInstanceOfInterface<IObserverAccountProvider>(providerConfigSettings.AssemblyName, providerConfigSettings.ProviderClass);
 
                 Log.Debug(string.Format("Initializing IObserverAccountProvider {0}", providerConfigSettings.ProviderClass));
                 observerAccountProvider.Initialize(ConfigSettings.XmlRootElement);
@@ -169,7 +169,7 @@ namespace TFSWIWatcher.BL
             foreach (ProviderConfigSettings providerConfigSettings in ConfigSettings.NotifyProviders)
             {
                 Log.Debug(string.Format("Instantiating INotifyProvider {0}", providerConfigSettings.ProviderClass));
-                INotifyProvider notifyProvider = Instancer.GetInstanceOfInterface<INotifyProvider>(providerConfigSettings.AssemblyName, providerConfigSettings.ProviderClass);
+                INotifyProvider notifyProvider = Util.GetInstanceOfInterface<INotifyProvider>(providerConfigSettings.AssemblyName, providerConfigSettings.ProviderClass);
 
                 Log.Debug(string.Format("Initializing INotifyProvider {0}", providerConfigSettings.ProviderClass));
                 notifyProvider.Initialize(ConfigSettings.XmlRootElement);
