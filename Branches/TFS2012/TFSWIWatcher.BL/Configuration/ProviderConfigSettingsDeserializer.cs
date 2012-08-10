@@ -28,8 +28,8 @@ namespace TFSWIWatcher.BL.Configuration
                 settings.Parameters = parametersAttribute.Value;
 
             XAttribute enabledAttribute = element.Attribute("enabled");
-            if (enabledAttribute != null && "true".Equals(enabledAttribute.Value, StringComparison.InvariantCultureIgnoreCase))
-                settings.Enabled = true;
+            if (enabledAttribute != null && "false".Equals(enabledAttribute.Value, StringComparison.InvariantCultureIgnoreCase))
+                settings.Enabled = false;
             
             return settings;
         }
