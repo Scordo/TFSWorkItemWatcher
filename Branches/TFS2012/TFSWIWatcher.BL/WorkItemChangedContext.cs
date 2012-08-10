@@ -33,7 +33,7 @@ namespace TFSWIWatcher.BL
             get; internal set;
         }
 
-        public ConfigSettingsConfigurationSection ConfigSettings
+        public SubscriberConfig ConfigSettings
         {
             get;
             internal set;
@@ -43,7 +43,7 @@ namespace TFSWIWatcher.BL
 
         #region Constructors
 
-        public WorkItemChangedContext(WorkItemChangeInfo changeInfo, TfsTeamProjectCollection teamProjectCollection, int workItemID, int workItemRevision, ConfigSettingsConfigurationSection configSettings, WorkItemChangedEvent workItemChangedEvent)
+        public WorkItemChangedContext(WorkItemChangeInfo changeInfo, TfsTeamProjectCollection teamProjectCollection, int workItemID, int workItemRevision, SubscriberConfig configSettings, WorkItemChangedEvent workItemChangedEvent)
         {
             WorkItemChangeInfo = changeInfo;
             TeamProjectCollection = teamProjectCollection;

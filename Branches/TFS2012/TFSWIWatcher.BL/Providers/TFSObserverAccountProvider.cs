@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
+using System.Xml.Linq;
 using log4net;
 using Microsoft.TeamFoundation.WorkItemTracking.Client;
 using TFSWIWatcher.BL.Configuration;
@@ -12,20 +13,20 @@ namespace TFSWIWatcher.BL.Providers
     {
         #region Non Public Members
 
-        private TFSObserverAccountConfigurationSection _config;
+        private TFSObserverAccountConfigSettings _config;
         private static readonly ILog _log = LogManager.GetLogger(typeof(TFSObserverAccountProvider));
 
         #endregion
 
         #region IObserverAccountProvider Members
 
-        void IObserverAccountProvider.Initialize()
+        void IObserverAccountProvider.Initialize(XElement configRootElement)
         {
             _log.Debug("Start: Initializing.");
-           
+
             try
             {
-                _config = TFSObserverAccountConfigurationSection.GetFromConfig();
+                _config = TFSObserverAccountConfigSettingsDeserializer.LoadFromXElement(configRootElement.Element("TFSObserverAccountConfig"));
             }
             catch (Exception ex)
             {

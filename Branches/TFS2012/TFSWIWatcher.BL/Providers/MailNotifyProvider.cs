@@ -1,8 +1,8 @@
 ﻿using System;
 using System.IO;
-using System.Reflection;
 using System.Text;
 using System.Xml;
+using System.Xml.Linq;
 using System.Xml.Serialization;
 using System.Xml.Xsl;
 using System.Net.Mail;
@@ -17,20 +17,20 @@ namespace TFSWIWatcher.BL.Providers
     {
         #region Non Public Members
 
-        private MailNotifyConfigurationSection _config;
+        private MailNotifyConfigSettings _config;
         private static readonly ILog _log = LogManager.GetLogger(typeof(MailNotifyProvider));
 
         #endregion
 
         #region INotifyProvider Members
 
-        void INotifyProvider.Initialize(string parameters)
+        void INotifyProvider.Initialize(XElement configRootElement)
         {
-            _log.DebugFormat("Start: Initializing with Parameters: {0}.", parameters);
+            _log.Debug("Start: Initializing.");
             
             try
             {
-                _config = MailNotifyConfigurationSection.GetFromConfig(parameters);
+                _config = MailNotifyConfigSettingsDeserializer.LoadFromXElement(configRootElement.Element("MailNotifyConfig"));
             }
             catch (Exception ex)
             {
@@ -62,7 +62,7 @@ namespace TFSWIWatcher.BL.Providers
             _log.DebugFormat("Start: Notifying Account {0}.", observerAccount);
             string email;
 
-            if (context.ConfigSettings.IsDev && _config.DevMail != null)
+            if (context.ConfigSettings.IsDevelopment && _config.DevMail != null)
             {
                 _log.DebugFormat("Running in dev-mode using mail {0}.", _config.DevMail);
                 email = _config.DevMail;
@@ -113,10 +113,6 @@ namespace TFSWIWatcher.BL.Providers
         {
             try
             {
-                string currentPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-                _log.DebugFormat("Setting current directory to {0}", currentPath);
-                Directory.SetCurrentDirectory(currentPath);
-
                 using (TextReader styleTextReader = new StreamReader(_config.MailTransformationFile, Encoding.UTF8))
                 {
                     using (XmlReader styleXmlReader = new XmlTextReader(styleTextReader))
