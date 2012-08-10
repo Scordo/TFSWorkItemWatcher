@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Reflection;
 using Microsoft.TeamFoundation.Client;
 using Microsoft.TeamFoundation.Common;
 using Microsoft.TeamFoundation.Framework.Server;
@@ -19,18 +17,6 @@ namespace TFSWIWatcher.BL
         static WorkItemChangedSubscriber()
         {
             XmlConfigurator.Configure();
-            AppDomain.CurrentDomain.AssemblyResolve += CurrentDomain_AssemblyResolve;
-        }
-
-        static Assembly CurrentDomain_AssemblyResolve(object sender, ResolveEventArgs args)
-        {
-            string currentAssemblyPath = Path.GetDirectoryName(typeof(WorkItemChangedSubscriber).Assembly.Location);
-            string assemblyPath = Path.Combine(currentAssemblyPath, new AssemblyName(args.Name).Name + ".dll");
-
-            if (File.Exists(assemblyPath) == false) 
-                return null;
-
-            return Assembly.LoadFrom(assemblyPath);
         }
 
         #region ISubscriber Implementation
