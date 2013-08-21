@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Net;
 using System.Text;
 using System.Xml;
 using System.Xml.Linq;
@@ -9,6 +10,7 @@ using System.Net.Mail;
 using System.Collections.Generic;
 using Microsoft.TeamFoundation.Client;
 using Microsoft.TeamFoundation.Framework.Client;
+using Microsoft.TeamFoundation.Framework.Common;
 using Microsoft.TeamFoundation.Server;
 using Microsoft.TeamFoundation.WorkItemTracking.Server;
 using log4net;
@@ -22,6 +24,10 @@ namespace TFSWIWatcher.BL.Providers
 
         private MailNotifyConfigSettings _config;
         private static readonly ILog _log = LogManager.GetLogger(typeof(MailNotifyProvider));
+        private static SmtpClient MailClient { get; set; }
+        private static ICredentialsByHost MailCredentials { get; set; }
+        private static string MailFromAddress { get; set; }
+
 
         #endregion
 
@@ -90,6 +96,8 @@ namespace TFSWIWatcher.BL.Providers
 
             try
             {
+                EnsureMailClientInitialized(context.TeamProjectCollection.ConfigurationServer);
+
                 MailMessage mail = new MailMessage();
                 mail.To.Add(new MailAddress(email, observerAccount));
 
@@ -97,15 +105,14 @@ namespace TFSWIWatcher.BL.Providers
                 mail.Subject = string.Format("Workitem {0} [{1}] has changed...", context.WorkItemID, context.WorkItemChangeInfo.WorkItemTitle);
                 mail.Body = GetTransformedHtml(context.WorkItemChangedEvent);
                 mail.IsBodyHtml = true;
+                mail.From = new MailAddress(MailFromAddress);
 
                 //send the message
-                SmtpClient smtp = new SmtpClient();
-                smtp.Send(mail);
-
+                MailClient.Send(mail);
             }
             catch (Exception ex)
             {
-                _log.ErrorFormat("Error whiel sending mail to {0} for account {1}: {2}", email, observerAccount, ex);
+                _log.ErrorFormat("Error while sending mail to {0} for account {1}: {2}", email, observerAccount, ex);
                 throw;
             }
 
@@ -174,10 +181,45 @@ namespace TFSWIWatcher.BL.Providers
                 return domainAndUsername.Trim();
             }
 
-            IGroupSecurityService groupSecurityService = (IGroupSecurityService)projectCollection.GetService(typeof(IIdentityManagementService));
-            Identity identity = groupSecurityService.ReadIdentity(SearchFactor.AccountName, domainAndUsername, QueryMembership.None);
 
-            return (identity != null) ? identity.MailAddress : null;
+            IIdentityManagementService identityManagement = (IIdentityManagementService)projectCollection.GetService(typeof(IIdentityManagementService));
+            TeamFoundationIdentity identity = identityManagement.ReadIdentity(IdentitySearchFactor.AccountName, domainAndUsername, MembershipQuery.None, ReadIdentityOptions.ExtendedProperties | ReadIdentityOptions.IncludeReadFromSource);
+
+            return (identity != null) ? identity.GetAttribute("Mail", null) : null;
+        }
+
+        private static void EnsureMailClientInitialized(TfsConfigurationServer configurationServer)
+        {
+            if (MailClient != null)
+                return;
+
+            ITeamFoundationRegistry registry = configurationServer.GetService<ITeamFoundationRegistry>();
+
+			string smtpServer = registry.GetValue("/Service/Integration/Settings/SmtpServer");
+			
+			if(string.IsNullOrWhiteSpace(smtpServer))
+				throw new Exception("Unable to get SmtpServer value from TFS registry.");
+
+			int port = registry.GetValue<int>("/Service/Integration/Settings/SmtpPort");
+
+			MailClient = new SmtpClient(smtpServer, port == 0 ? 25 : port);
+
+            MailFromAddress = registry.GetValue("/Service/Integration/Settings/EmailNotificationFromAddress");
+
+            if (string.IsNullOrWhiteSpace(MailFromAddress))
+				throw new Exception("Unable to get EmailNotificationFromAddress value from TFS registry.");
+
+            string user = registry.GetValue("/Service/Integration/Settings/SmtpUser");
+
+            if (string.IsNullOrWhiteSpace(user))
+                return;
+
+            string password = registry.GetValue("/Service/Integration/Settings/SmtpPassword");
+
+            if (string.IsNullOrWhiteSpace(password))
+                throw new Exception("Unable to get SmtpPassword value from TFS registry.");
+
+            MailClient.Credentials = new NetworkCredential(user, password);
         }
 
         #endregion
