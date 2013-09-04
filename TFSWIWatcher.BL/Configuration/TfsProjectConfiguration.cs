@@ -3,6 +3,7 @@ using System.Xml;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Configuration;
+using System.Xml.Linq;
 
 namespace TFSWIWatcher.BL.Configuration
 {
@@ -27,26 +28,26 @@ namespace TFSWIWatcher.BL.Configuration
 
 		#region Constructor
 
-		public TfsProjectConfiguration(XmlNode projectNode)
+		public TfsProjectConfiguration(XElement projectElement)
 		{
-			if (projectNode == null)
-				throw new ArgumentNullException("projectNode");
+			if (projectElement == null)
+				throw new ArgumentNullException("projectElement");
 
-			XmlAttribute nameAttribute = projectNode.Attributes["name"];
+			XAttribute nameAttribute = projectElement.Attribute("name");
 
 			if (nameAttribute == null)
-				throw new ConfigurationErrorsException("Could not find name-Attribute in Project-Node.", projectNode);
+				throw new ConfigurationErrorsException("Could not find name-Attribute in Project-Node.");
 
 			Name = nameAttribute.Value.Trim();
 
 			List<string> workitemTypes = new List<string>();
 			
-			foreach (XmlNode witNode in projectNode.SelectNodes("WIT"))
+			foreach (XElement witElement in projectElement.Elements("WIT"))
 			{
-				XmlAttribute includeAttribute = witNode.Attributes["include"];
+				XAttribute includeAttribute = witElement.Attribute("include");
 
 				if (includeAttribute == null)
-					throw new ConfigurationErrorsException("Could not find include-Attribute in WIT-Node.", witNode);
+					throw new ConfigurationErrorsException("Could not find include-Attribute in WIT-Node.");
 
 				workitemTypes.Add(includeAttribute.Value.Trim());
 			}
