@@ -1,11 +1,18 @@
 ﻿using System;
 using System.IO;
-using System.Reflection;
+using System.Net;
 using System.Text;
 using System.Xml;
+using System.Xml.Linq;
+using System.Xml.Serialization;
 using System.Xml.Xsl;
 using System.Net.Mail;
 using System.Collections.Generic;
+using Microsoft.TeamFoundation.Client;
+using Microsoft.TeamFoundation.Framework.Client;
+using Microsoft.TeamFoundation.Framework.Common;
+using Microsoft.TeamFoundation.Server;
+using Microsoft.TeamFoundation.WorkItemTracking.Server;
 using log4net;
 using TFSWIWatcher.BL.Configuration;
 
@@ -15,20 +22,24 @@ namespace TFSWIWatcher.BL.Providers
     {
         #region Non Public Members
 
-        private MailNotifyConfigurationSection _config;
+        private MailNotifyConfigSettings _config;
         private static readonly ILog _log = LogManager.GetLogger(typeof(MailNotifyProvider));
+        private static SmtpClient MailClient { get; set; }
+        private static ICredentialsByHost MailCredentials { get; set; }
+        private static string MailFromAddress { get; set; }
+
 
         #endregion
 
         #region INotifyProvider Members
 
-        void INotifyProvider.Initialize(string parameters)
+        void INotifyProvider.Initialize(XElement configRootElement)
         {
-            _log.DebugFormat("Start: Initializing with Parameters: {0}.", parameters);
+            _log.Debug("Start: Initializing.");
             
             try
             {
-                _config = MailNotifyConfigurationSection.GetFromConfig(parameters);
+                _config = MailNotifyConfigSettingsDeserializer.LoadFromXElement(configRootElement.Element("MailNotifyConfig"));
             }
             catch (Exception ex)
             {
@@ -60,13 +71,13 @@ namespace TFSWIWatcher.BL.Providers
             _log.DebugFormat("Start: Notifying Account {0}.", observerAccount);
             string email;
 
-            if (context.ConfigSettings.IsDev && _config.DevMail != null)
+            if (context.ConfigSettings.IsDevelopment && _config.DevMail != null)
             {
                 _log.DebugFormat("Running in dev-mode using mail {0}.", _config.DevMail);
                 email = _config.DevMail;
             }
             else
-                email = TFSHelper.GetEMailOfUser(context.TeamServer, observerAccount.Trim());
+                email = GetEMailOfUser(context.TeamProjectCollection, observerAccount.Trim());
 
             if (email != null && email.Trim().Length > 0)
             {
@@ -85,41 +96,38 @@ namespace TFSWIWatcher.BL.Providers
 
             try
             {
+                EnsureMailClientInitialized(context.TeamProjectCollection.ConfigurationServer);
+
                 MailMessage mail = new MailMessage();
                 mail.To.Add(new MailAddress(email, observerAccount));
 
                 //set the content
                 mail.Subject = string.Format("Workitem {0} [{1}] has changed...", context.WorkItemID, context.WorkItemChangeInfo.WorkItemTitle);
-                mail.Body = GetTransformedHtml(context.NotifyXML);
+                mail.Body = GetTransformedHtml(context.WorkItemChangedEvent);
                 mail.IsBodyHtml = true;
+                mail.From = new MailAddress(MailFromAddress);
 
                 //send the message
-                SmtpClient smtp = new SmtpClient();
-                smtp.Send(mail);
-
+                MailClient.Send(mail);
             }
             catch (Exception ex)
             {
-                _log.ErrorFormat("Error whiel sending mail to {0} for account {1}: {2}", email, observerAccount, ex);
+                _log.ErrorFormat("Error while sending mail to {0} for account {1}: {2}", email, observerAccount, ex);
                 throw;
             }
 
             _log.DebugFormat("Finish: Sending mail to account {0} using email {1}.", observerAccount, email);
         }
 
-        private string GetTransformedHtml(string xml)
+        private string GetTransformedHtml(WorkItemChangedEvent workItemChangedEvent)
         {
             try
             {
-                string currentPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-                _log.DebugFormat("Setting current directory to {0}", currentPath);
-                Directory.SetCurrentDirectory(currentPath);
-
                 using (TextReader styleTextReader = new StreamReader(_config.MailTransformationFile, Encoding.UTF8))
                 {
                     using (XmlReader styleXmlReader = new XmlTextReader(styleTextReader))
                     {
-                        using (TextReader workitemTextReader = new StringReader(xml))
+                        using (TextReader workitemTextReader = new StringReader(SerializeToXml(workItemChangedEvent)))
                         {
                             using (XmlReader workitemXmlReader = new XmlTextReader(workitemTextReader))
                             {
@@ -128,8 +136,7 @@ namespace TFSWIWatcher.BL.Providers
                                     using (XmlWriter resultXmlWriter = new XmlTextWriter(resultTextWriter))
                                     {
                                         XslCompiledTransform xslCompiledTransform = new XslCompiledTransform();
-                                        xslCompiledTransform.Load(styleXmlReader);
-
+                                        xslCompiledTransform.Load(styleXmlReader, null, new TfsXmlResolver(_config.MailTransformationFile));
                                         xslCompiledTransform.Transform(workitemXmlReader, resultXmlWriter);
 
                                         return resultTextWriter.ToString();
@@ -145,6 +152,74 @@ namespace TFSWIWatcher.BL.Providers
                 _log.ErrorFormat("Error while transforming notify-xml to html using file {0}: {1}", _config.MailTransformationFile, ex);
                 throw;
             }
+        }
+
+        private string SerializeToXml(object instance)
+        {
+            if (instance == null)
+                throw new ArgumentNullException("instance");
+
+            using (StringWriter writer = new StringWriter())
+            {
+                new XmlSerializer(instance.GetType()).Serialize(writer, instance);
+
+                return writer.ToString();
+            }
+        }
+
+        /// <summary>
+        /// Gets the E mail of user.
+        /// </summary>
+        /// <param name="projectCollection">The project collection.</param>
+        /// <param name="domainAndUsername">The domain and username.</param>
+        /// <returns></returns>
+        public static string GetEMailOfUser(TfsTeamProjectCollection projectCollection, string domainAndUsername)
+        {
+            if (domainAndUsername != null && domainAndUsername.Contains("@"))
+            {
+                // username is an email address --> return the email
+                return domainAndUsername.Trim();
+            }
+
+
+            IIdentityManagementService identityManagement = (IIdentityManagementService)projectCollection.GetService(typeof(IIdentityManagementService));
+            TeamFoundationIdentity identity = identityManagement.ReadIdentity(IdentitySearchFactor.AccountName, domainAndUsername, MembershipQuery.None, ReadIdentityOptions.ExtendedProperties | ReadIdentityOptions.IncludeReadFromSource);
+
+            return (identity != null) ? identity.GetAttribute("Mail", null) : null;
+        }
+
+        private static void EnsureMailClientInitialized(TfsConfigurationServer configurationServer)
+        {
+            if (MailClient != null)
+                return;
+
+            ITeamFoundationRegistry registry = configurationServer.GetService<ITeamFoundationRegistry>();
+
+			string smtpServer = registry.GetValue("/Service/Integration/Settings/SmtpServer");
+			
+			if(string.IsNullOrWhiteSpace(smtpServer))
+				throw new Exception("Unable to get SmtpServer value from TFS registry.");
+
+			int port = registry.GetValue<int>("/Service/Integration/Settings/SmtpPort");
+
+			MailClient = new SmtpClient(smtpServer, port == 0 ? 25 : port);
+
+            MailFromAddress = registry.GetValue("/Service/Integration/Settings/EmailNotificationFromAddress");
+
+            if (string.IsNullOrWhiteSpace(MailFromAddress))
+				throw new Exception("Unable to get EmailNotificationFromAddress value from TFS registry.");
+
+            string user = registry.GetValue("/Service/Integration/Settings/SmtpUser");
+
+            if (string.IsNullOrWhiteSpace(user))
+                return;
+
+            string password = registry.GetValue("/Service/Integration/Settings/SmtpPassword");
+
+            if (string.IsNullOrWhiteSpace(password))
+                throw new Exception("Unable to get SmtpPassword value from TFS registry.");
+
+            MailClient.Credentials = new NetworkCredential(user, password);
         }
 
         #endregion

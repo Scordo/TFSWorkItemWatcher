@@ -1,69 +1,43 @@
-﻿using System.Configuration;
-
-namespace TFSWIWatcher.BL.Configuration
+﻿namespace TFSWIWatcher.BL.Configuration
 {
-    public class ProviderConfigSettings : ConfigurationElement
+    public class ProviderConfigSettings
     {
         #region Properties
-
-        /// <summary>
-        /// Gets or sets a value indicating whether this <see cref="ProviderConfigSettings"/> is deserialized.
-        /// </summary>
-        /// <value><c>true</c> if deserialized; otherwise, <c>false</c>.</value>
-        public bool Deserialized { get; set; }
 
         /// <summary>
         /// Gets the name of the assembly.
         /// </summary>
         /// <value>The name of the assembly.</value>
-        [ConfigurationProperty("assemblyName", IsRequired = true)]
-        public string AssemblyName
-        {
-            get { return (string)base["assemblyName"]; }
-        }
+        public string AssemblyName { get; set; }
 
         /// <summary>
         /// Gets the adapter provider class.
         /// </summary>
         /// <value>The adapter provider class.</value>
-        [ConfigurationProperty("providerClass", IsRequired = true)]
-        public string ProviderClass
-        {
-            get { return (string)base["providerClass"]; }
-        }
+        public string ProviderClass { get; set; }
 
         /// <summary>
         /// Gets the parameters.
         /// </summary>
         /// <value>The parameters.</value>
-        [ConfigurationProperty("parameters", IsRequired = false)]
-        public string Parameters
-        {
-            get { return (string)base["parameters"]; }
-        }
+        public string Parameters { get; set; }
 
         /// <summary>
         /// Gets a value indicating whether this <see cref="ProviderConfigSettings"/> is enabled.
         /// </summary>
         /// <value><c>true</c> if enabled; otherwise, <c>false</c>.</value>
-        [ConfigurationProperty("enabled", IsRequired = false, DefaultValue = true)]
-        public bool Enabled
+        public bool Enabled { get; set; }
+
+        #endregion
+
+        #region Constructor
+
+        public ProviderConfigSettings()
         {
-            get { return (bool)base["enabled"]; }
+            Enabled = true;
         }
 
         #endregion
 
-        #region Non Public Methods
-
-        /// <summary>
-        /// Called after deserialization.
-        /// </summary>
-        protected override void PostDeserialize()
-        {
-            Deserialized = true;
-        }
-
-        #endregion
     }
 }

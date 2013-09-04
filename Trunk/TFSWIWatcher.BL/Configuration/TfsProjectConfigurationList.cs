@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Xml;
 using System.Collections.Generic;
+using System.Xml.Linq;
 
 namespace TFSWIWatcher.BL.Configuration
 {
@@ -13,14 +14,14 @@ namespace TFSWIWatcher.BL.Configuration
 			
 		}
 
-		public TfsProjectConfigurationList(XmlNode node)
+		public TfsProjectConfigurationList(XElement element)
 		{
-			if (node == null)
+			if (element == null)
 				return;
 
-			foreach (XmlNode projectNode in node.SelectNodes("Project"))
+			foreach (XElement projectElement in element.Elements("Project"))
 			{
-				Add(new TfsProjectConfiguration(projectNode));
+				Add(new TfsProjectConfiguration(projectElement));
 			}
 		}
 
@@ -48,7 +49,7 @@ namespace TFSWIWatcher.BL.Configuration
 
 			TfsProjectConfiguration config = Find(p => p.Name == project);
 			
-			return config == null ? false : config.IsWorkitemTypeSupported(workitemType);
+			return config != null && config.IsWorkitemTypeSupported(workitemType);
 		}
 
 		#endregion

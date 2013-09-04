@@ -1,6 +1,6 @@
 ﻿using Microsoft.TeamFoundation.Client;
+using Microsoft.TeamFoundation.WorkItemTracking.Server;
 using TFSWIWatcher.BL.Configuration;
-using TFSWIWatcher.BL.WorkItemRelated;
 
 namespace TFSWIWatcher.BL
 {
@@ -8,7 +8,7 @@ namespace TFSWIWatcher.BL
     {
         #region Properties
 
-        public string NotifyXML
+        public WorkItemChangedEvent WorkItemChangedEvent
         {
             get; internal set;
         }
@@ -18,12 +18,7 @@ namespace TFSWIWatcher.BL
             get; internal set;
         }
 
-        public ServerInfo ServerInfo
-        {
-            get; internal set;
-        }
-
-        public TeamFoundationServer TeamServer
+        public TfsTeamProjectCollection TeamProjectCollection
         {
             get; internal set;
         }
@@ -38,7 +33,7 @@ namespace TFSWIWatcher.BL
             get; internal set;
         }
 
-        public ConfigSettingsConfigurationSection ConfigSettings
+        public SubscriberConfig ConfigSettings
         {
             get;
             internal set;
@@ -48,15 +43,14 @@ namespace TFSWIWatcher.BL
 
         #region Constructors
 
-        public WorkItemChangedContext(string notifyXML, WorkItemChangeInfo changeInfo, ServerInfo serverInfo, TeamFoundationServer teamserver, int workItemID, int workItemRevision, ConfigSettingsConfigurationSection configSettings)
+        public WorkItemChangedContext(WorkItemChangeInfo changeInfo, TfsTeamProjectCollection teamProjectCollection, int workItemID, int workItemRevision, SubscriberConfig configSettings, WorkItemChangedEvent workItemChangedEvent)
         {
-            NotifyXML = notifyXML;
             WorkItemChangeInfo = changeInfo;
-            ServerInfo = serverInfo;
-            TeamServer = teamserver;
+            TeamProjectCollection = teamProjectCollection;
             WorkItemID = workItemID;
             WorkItemRevision = workItemRevision;
             ConfigSettings = configSettings;
+            WorkItemChangedEvent = workItemChangedEvent;
         }
 
         #endregion

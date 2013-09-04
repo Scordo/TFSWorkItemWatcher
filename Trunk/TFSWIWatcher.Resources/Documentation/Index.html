@@ -27,16 +27,10 @@
                     <a href="#Architecture"><b>Architectural concepts</b></a>
                 </li>
                 <li>
-                    <a href="#CredentialsProviders"><b>Provided CredentialsProviders</b></a>
-                </li>
-                <li>
                     <a href="#ObserverAccountProviders"><b>Provided ObserverAccountProviders</b></a>
                 </li>
                 <li>
                     <a href="#NotifyProviders"><b>Provided NotifyProviders</b></a>
-                </li>
-                <li>
-                    <a href="#OwnCredentialsProvider"><b>Implementing an own CredentialsProvider</b></a>
                 </li>
                 <li>
                     <a href="#OwnObserverAccountProvider"><b>Implementing an own ObserverAccountProvider</b></a>
@@ -51,7 +45,7 @@
             <h2><a name="About">About</a></h2>
             
             <p>
-                TFSWIWatcher is a service which allows you to register for watching workitems in Team Foundation Server. The service can be configured to use different logic to retrieve accounts to be notified and to deliver messages to the accounts to be notified.
+                TFSWIWatcher is a server side plugin which allows you to register for watching workitems in Team Foundation Server 2012. The plugin can be configured to use different logic to retrieve accounts to be notified and to deliver messages to the accounts to be notified.
             </p>
             
             <p>
@@ -74,10 +68,10 @@
             
             <ul class="index">
                 <li>
-                    <a href="http://www.microsoft.com/downloads/details.aspx?familyid=ab99342f-5d1a-413d-8319-81da479ab0d7&displaylang=en"><b>Microsoft .NET Framework 3.5 Service Pack 1</b></a>
+                    <a href="http://www.microsoft.com/visualstudio/eng/products/visual-studio-team-foundation-server-2012"><b>Team Foundation Server 2012</b></a>
                 </li>
                 <li>
-                    <a href="http://msdn.microsoft.com/en-us/tfs2008/bb980963.aspx"><b>Visual Studio Team System 2008 Team Foundation Server Power Tools</b></a>
+                    <a href="http://visualstudiogallery.msdn.microsoft.com/b1ef7eb2-e084-4cb8-9bc7-06c3bad9148f"><b>Team Foundation Server Power Tools 2012</b></a>&nbsp;
                 </li>
             </ul>
             
@@ -86,11 +80,6 @@
             <h2><a name="DefaultInstall">Installation with default settings</a></h2>
             
             <div class="lightIndent">
-                <h3>.Net Framework 3.5 SP 1 Installation</h3>
-                <p>
-                    If you've not already installed .Net Framework 3.5 please download and install it using the link under <b>>> <a href="#Requirements">Requirements</a> <<</b>.
-                </p>
-                
                 <h3>Team Foundation Power Tools Installation</h3>
                 <p>
                     If you've not already installed TFPT please download and install it using the link under <b>>> <a href="#Requirements">Requirements</a> <<</b>. You will need TFPT to complete the next step.
@@ -148,42 +137,34 @@
                     Save the result and after opening a workitem you'll have a new Tab "Observers":
                 </p>
                 
-                <h3>Settings in TFSWIWatcher.Service.exe.config</h3>
+                &nbsp;<h3>Installing the Plugin</h3>
                 <p>
-                    There are 2 important sections <strong>ConfigSettings</strong> and <strong>system.net</strong>.  Please change the <strong>Teamserver</strong> in <strong>ConfigSettings</strong> and if the provided port conflicts with another app on the server running TFSWIWatcher please also change the <strong>port</strong>:
-                </p>
+                    To get the plugin running you have to copy the following files into the Plugins folder of Team Foundation Server 2012 (AppTier). For a standard installation the path to copy the following files would be something like this: &quot;<a href="file:///C:/Program%20Files/Microsoft%20Team%20Foundation%20Server%2011.0/Application%20Tier/Web%20Services/bin/Plugins">C:\Program Files\Microsoft Team Foundation Server 11.0\Application Tier\Web Services\bin\Plugins</a>&quot;</p>
                 
-                <img src="Resources/BasicConfigSettings.jpg" alt="Basic Config Settings" />
+                <div>
+                    The following files have to be copied to the Plugins folder:
+                    <ul style="margin-left: 30px">
+                        <li>log4net.dll (The logging framework)</li>
+                        <li>TFSWIWatcher.BL.dll (The plugin)</li>
+                        <li>TFSWIWatcher.BL.dll.config (You can modify settings for the plugin here)</li>
+                        <li>TFSWIWatcher.BL.dll.logconfig (You can modify settings for logging here)</li>
+                    </ul>
+                </div>
                 
                 <p>
-                    After this please configure your mail settings in the following section:
+                    Make sure that you have configured your mail settings in the Administrative Console of Team Foundation Server! Because the plugin will use the Mail-Settings of TFS to send mails.<br/>
+                    <strong>Dont forgett to restart the TFS App Tier after the Plugin has been deployed!</strong>
                 </p>
-                
-                <img src="Resources/MailSettings.jpg" alt="Mail Settings" />
-                
-                <h3>Installing the service</h3>
-                <p>
-                    Just run the <strong>install.bat</strong> script to install the service. You will be prompted for credentials the service should run with. Please specify an account having enough rights for the Team Foundation Server.
-                </p>
-                
-                <h3>Start-Options for the Service</h3>
-                <p>
-                    After installing the service, the service can be found in the service control panel as <strong>TFSWIWatcherService</strong>. Configure the service like in the following screenshot:
-                </p>
-                
-                <img src="Resources/ServiceSettings.jpg" alt="Service Settings" />
+
             </div>
             
             <p class="separation" />
+        
             <h2><a name="TroubleShooting">Trouble shooting</a></h2>
             
             <p>
                 When errors arise they are logged to a file named
-                <strong>log.txt</strong>. Lo4Net is used for logging. You can change the way logging is done through modifying the following 
-                section:</p>
-            
-            <img src="Resources/Log4NetConfig.jpg" alt="Log4Net" />
-            
+                <strong>TFSWIWatcherlog.txt</strong> in the <strong>Temp-Directory</strong> of your server. Lo4Net is used for logging. You can change the way logging is done through modifying the content of the file <strong>TFSWIWatcher.BL.dll.logconfig</strong>:</p>
             <p>
                 More
                 information about how to change this config and which possibilities exist can be found 
@@ -200,22 +181,7 @@
                 </a>
                 <br />
                     
-                <h3>1. Getting notified about workitem changes</h3>
-                <p>
-                    On startup the windows service is creating a windows communication foundation 
-                    host. It then registeres the wcf host endpoint with team foundation server using 
-                    the tfs api. The type of registration is soap. On successful registration with 
-                    tfs the service is getting a unique id for the registration. When the service is 
-                    shutting down, the unique id is used to unsubscribe from getting further events. 
-                    To connect to tfs the service is using a CredentialsProvider which is configured 
-                    in the configuration file TFSWIWatcher.Service.exe.config under the 
-                    configuration node <strong>CredentialsProvider</strong>. By default the service is using 
-                    the <strong>UICredentialsProvider</strong> which takes the credentials the service runs with to 
-                    connect to tfs. More information about CredentialsProviders are under <b>&gt;&gt; <a href="#CredentialsProviders">this section</a> 
-                    &lt;&lt;</b>.</p>
-                    
-                
-                <h3>2. Determining accounts to notify</h3>
+                <h3>1. Determining accounts to notify</h3>
                 <p>
                     
                     In the configuration file TFSWIWatcher.Service.exe.config there is a section 
@@ -227,7 +193,7 @@
                     ObserverAccountProviders are under <b>&gt;&gt; <a href="#ObserverAccountProviders">this section</a> 
                     &lt;&lt;</b>.</p>
                     
-                <h3>3. Notifying accounts</h3>
+                <h3>2. Notifying accounts</h3>
                 <p>
                     
                     In the configuration file TFSWIWatcher.Service.exe.config there is a section 
@@ -241,61 +207,7 @@
             </div>
             
             <p class="separation" />
-            <h2><a name="CredentialsProviders">Provided CredentialsProviders</a></h2>
             
-            <div class="lightIndent">
-                <h3>Choosing a CredentialsProvider</h3>
-                <p>
-                    You can change the CredentialsProvider by changing the values of <strong>assemblyName</strong> and <strong>providerClass</strong> in config <strong>TFSWIWatcher.Service.exe.config</strong>:
-                </p>
-                <img src="Resources/CredentialsProviderConfigSection.jpg"alt="Credentials Provider Config Section" />
-                <p>
-                
-                    The above configuration is for the CredentialsProvider <strong>UICredentialsProvider</strong>, 
-                    which is the default provider.</p>
-                
-            
-                <h3>1. UICredentialsProvider</h3>
-                <p>
-                    
-                    This provider is the default CredentialsProvider to use it just change the <strong>CredentialsProvider section</strong> to 
-                    look like the one under heading <strong>Choosing a CredentialsProvider</strong>.This 
-                    provider takes the credentials the service is running with and communictaes with 
-                    team foundation server using this credentials. To use this provider the service 
-                    should be cofigured to run with an account having enough rights to communicate 
-                    with team foundation server. This provider has no further configuration 
-                    settings.</p>
-                    
-                <h3>2. ConfigCredentialsProvider</h3>
-                <p>
-                    
-                    This provider uses predefined credentials which are configured in config <strong>TFSWIWatcher.Service.exe.config</strong> to communicate with team foundation server. 
-                    This his helpful if you want to run the service with very few permissions. Or if 
-                    the service is running at a different server then team foundation server and 
-                    your running team foundation server without a domain. In this case you&#39;re not 
-                    able to run the service under an account name which is able to communicate with 
-                    team foundation server. To choose this provider change the <strong>CredentialsProvider section </strong> 
-                    to look like the following section:</p>
-                    
-                <img src="Resources/ConfigCredentialsProviderChoice.jpg" alt="Config Credentials Provider Choice" />
-                
-                <p>
-                    
-                    The next step is to register a configuration section for this provider. This 
-                    configuration section is used to provider the username, password and domain:</p>
-                    
-                <img src="Resources/ConfigCredentialsProviderConfigSectionSetup.jpg" alt="Config Credentials Provider Config Section Setup" />
-                
-                <p>
-                    The last step is to add the section where you need to provide the credentials used to connect to team foundation server. 
-                    In the following case you see the credentials I&#39;ve used to connect to during 
-                    development to test on the VPC image microsoft has provided to test team 
-                    foundation server:</p>
-                    
-                <img src="Resources/CredentialsProviderConfigSectionSample.jpg" alt="Credentials Provider Config Section Sample" />
-            </div>
-            
-            <p class="separation" />
             <h2><a name="ObserverAccountProviders">Provided ObserverAccountProviders</a></h2>
             
             <div class="lightIndent">
@@ -338,39 +250,6 @@
                     will send a single notify mail to accounts that where removed from the list of 
                     observers, so that those observers can detect an unwanted removal from the 
                     list of observer.</p>
-                    
-                <h3>1. XMLObserverAccountProvider</h3>
-                <p>
-                
-                    This ObserverAccountProvider is used to define which account gets notified when 
-                    a workitem changed using a xml config file. Here is a saple config file:</p>
-                    
-                <img src="Resources/XMLObserverAccountProviderFileSample.jpg" alt="XMLObserverAccountProvider File Sample" />
-                
-                <p>
-                    In the above example "TFS Setup" will be notified about all changes of every workitem (*). "Darren" will be notified about changes to workitems with ID: 15,11,13,2,3,4,5,6 or 1. And "Brian" will be notified about changes to workitems with ID: 15,2,3,4,5,6 or 7.
-                    As you can see in the example its possible to get <strong>notified about changes of all 
-                    workitems</strong> using a star (*). Its possible to provide <strong>single IDs</strong> as well as <strong>ranges 
-                    of IDs</strong> using a a hyphen between two IDs. To enable this provider add the following line to your 
-                    <strong>ObserverAccountProviders section</strong>:</p>
-                
-                <img src="Resources/XMLObserverAccountProviderRegistration.jpg" alt="XMLObserverAccountProvider Registration" />
-                
-                <p>
-                    This provider needs further information which is configured using a custom 
-                    configuration section. This section must be registered using the following line:</p>
-                    
-                <img src="Resources/XMLObserverAccountProviderConfigRegistration.jpg" alt="XMLObserverAccountProvider Config Registration" />
-                
-                <p>
-                    The last step is to add the following section and to customize the settings:
-                </p>
-                
-                <img src="Resources/XMLObserverAccountProviderConfig.jpg" alt="XMLObserverAccountProvider Config" />
-                
-                <p>
-                    The only setting here is the <strong>file</strong> where to find the xml defining which account gets 
-                    notified for which workitem change.</p>
             </div>
             
             <p class="separation" />
@@ -405,32 +284,13 @@
                 </p>
                 
                 <img src="Resources/MailNotifyConfig.jpg" alt="Mail Notify Config" />
+               
                 
-                <p>
-                    The only thing you can do in the above section is to provide the path to a 
-                    filename acting as a xsl transformation or you can modify the existing file to 
-                    satisfy your needs. 
-                    The last step is to configure the settings for sending the mails: 
-                </p>
-                
-                <img src="Resources/MailSettings.jpg" alt="Mail Settings" />
-            </div>
+                &nbsp;</div>
             
             <p class="separation" />
             
-            <h2><a name="OwnCredentialsProvider">Implementing an own CredentialsProvider</a></h2>
-            
-            <div class="lightIndent">
-                <p>
-                    To implement your own CredentialsProvider just create a project and reference the assembly <strong>Microsoft.TeamFoundation.Client</strong> and create a class implementing the interface <strong>ICredentialsProvider</strong> which is located in namespace <strong>Microsoft.TeamFoundation.Client</strong>. The interface has the following definition: 
-                </p>
-                
-                <img src="Resources/ICredentialsProvider.jpg" alt="ICredentialsProvider" />
-            </div>
-            
-            <p class="separation" />
-            
-            <h2><a name="OwnObserverAccountProvider">Implementing an own ObserverAccountProvider</a></h2>
+           <h2><a name="OwnObserverAccountProvider">Implementing an own ObserverAccountProvider</a></h2>
             
             <div class="lightIndent">
                 <p>

@@ -1,32 +1,22 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TFSWIWatcher.BL", "TFSWIWatcher.BL\TFSWIWatcher.BL.csproj", "{2C7C0C98-88FE-476C-9EB7-F5896F4895D2}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TFSWIWatcher.Service", "TFSWIWatcher.Service\TFSWIWatcher.Service.csproj", "{FD78E9CF-B934-43AC-8003-56B491CA7B44}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TFSWIWatcher.Resources", "TFSWIWatcher.Resources\TFSWIWatcher.Resources.csproj", "{5D6A4AD3-42C8-4B40-8EE4-6E49405755A6}"
 EndProject
-Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "TFSWIWatcher.Setup", "TFSWIWatcher.Setup\TFSWIWatcher.Setup.vdproj", "{A4531AEB-FEBD-45D2-A919-B5412A0A25DC}"
-EndProject
 Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 5
 		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
-		SccTeamFoundationServer = https://tfs08.codeplex.com/
 		SccLocalPath0 = .
-		SccProjectUniqueName1 = TFSWIWatcher.BL\\TFSWIWatcher.BL.csproj
-		SccProjectName1 = TFSWIWatcher.BL
 		SccLocalPath1 = TFSWIWatcher.BL
-		SccProjectUniqueName2 = TFSWIWatcher.Service\\TFSWIWatcher.Service.csproj
-		SccProjectName2 = TFSWIWatcher.Service
-		SccLocalPath2 = TFSWIWatcher.Service
-		SccProjectUniqueName3 = TFSWIWatcher.Resources\\TFSWIWatcher.Resources.csproj
-		SccProjectName3 = TFSWIWatcher.Resources
-		SccLocalPath3 = TFSWIWatcher.Resources
-		SccProjectUniqueName4 = TFSWIWatcher.Setup\\TFSWIWatcher.Setup.vdproj
-		SccProjectName4 = TFSWIWatcher.Setup
-		SccLocalPath4 = TFSWIWatcher.Setup
+		SccLocalPath2 = TFSWIWatcher.Resources
+		SccNumberOfProjects = 3
+		SccProjectName1 = TFSWIWatcher.BL
+		SccProjectName2 = TFSWIWatcher.Resources
+		SccProjectUniqueName1 = TFSWIWatcher.BL\\TFSWIWatcher.BL.csproj
+		SccProjectUniqueName2 = TFSWIWatcher.Resources\\TFSWIWatcher.Resources.csproj
+		SccTeamFoundationServer = https://tfs.codeplex.com/tfs/tfs08
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -43,22 +33,10 @@ Global
 		{2C7C0C98-88FE-476C-9EB7-F5896F4895D2}.Release|Any CPU.Build.0 = Release|Any CPU
 		{2C7C0C98-88FE-476C-9EB7-F5896F4895D2}.Release|X86.ActiveCfg = Release|Any CPU
 		{2C7C0C98-88FE-476C-9EB7-F5896F4895D2}.Release|X86.Build.0 = Release|Any CPU
-		{FD78E9CF-B934-43AC-8003-56B491CA7B44}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{FD78E9CF-B934-43AC-8003-56B491CA7B44}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{FD78E9CF-B934-43AC-8003-56B491CA7B44}.Debug|X86.ActiveCfg = Debug|Any CPU
-		{FD78E9CF-B934-43AC-8003-56B491CA7B44}.Debug|X86.Build.0 = Debug|Any CPU
-		{FD78E9CF-B934-43AC-8003-56B491CA7B44}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{FD78E9CF-B934-43AC-8003-56B491CA7B44}.Release|Any CPU.Build.0 = Release|Any CPU
-		{FD78E9CF-B934-43AC-8003-56B491CA7B44}.Release|X86.ActiveCfg = Release|Any CPU
-		{FD78E9CF-B934-43AC-8003-56B491CA7B44}.Release|X86.Build.0 = Release|Any CPU
 		{5D6A4AD3-42C8-4B40-8EE4-6E49405755A6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{5D6A4AD3-42C8-4B40-8EE4-6E49405755A6}.Debug|X86.ActiveCfg = Debug|Any CPU
 		{5D6A4AD3-42C8-4B40-8EE4-6E49405755A6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5D6A4AD3-42C8-4B40-8EE4-6E49405755A6}.Release|X86.ActiveCfg = Release|Any CPU
-		{A4531AEB-FEBD-45D2-A919-B5412A0A25DC}.Debug|Any CPU.ActiveCfg = Debug
-		{A4531AEB-FEBD-45D2-A919-B5412A0A25DC}.Debug|X86.ActiveCfg = Debug
-		{A4531AEB-FEBD-45D2-A919-B5412A0A25DC}.Release|Any CPU.ActiveCfg = Release
-		{A4531AEB-FEBD-45D2-A919-B5412A0A25DC}.Release|X86.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
