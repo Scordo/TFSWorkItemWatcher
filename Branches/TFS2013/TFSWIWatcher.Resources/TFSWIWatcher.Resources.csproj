@@ -53,7 +53,7 @@
     <Content Include="Components\log4net.dll" />
     <Content Include="Components\log4net.xml" />
     <Content Include="Components\Microsoft.TeamFoundation.Framework.Server.dll" />
-    <Content Include="Components\Microsoft.TeamFoundation.WorkItemTracking.Server.Dataaccesslayer.dll" />
+    <Content Include="Components\Microsoft.TeamFoundation.WorkItemTracking.Server.dll" />
     <Content Include="Components\MSBuild.Community.Tasks.dll" />
     <Content Include="Components\MSBuild.Community.Tasks.xml" />
     <Content Include="Documentation\Index.html" />
