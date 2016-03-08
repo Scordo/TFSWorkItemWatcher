@@ -131,7 +131,7 @@ namespace TFSWIWatcher.BL
                                                                 WorkitemType = workItemChangedEvent.CoreFields.StringFields.First(w => w.ReferenceName == "System.WorkItemType").NewValue
                                                             };
 
-                return new WorkItemChangedContext(workItemChangeInfo, teamProjectCollection, workitemId, workitemRevision, ConfigSettings, workItemChangedEvent);
+                return new WorkItemChangedContext(workItemChangeInfo, teamProjectCollection, workitemId, workitemRevision, ConfigSettings, workItemChangedEvent, requestContext);
             }
             catch (Exception ex)
             {
