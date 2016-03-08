@@ -1,4 +1,5 @@
 ﻿using Microsoft.TeamFoundation.Client;
+using Microsoft.TeamFoundation.Framework.Server;
 using Microsoft.TeamFoundation.WorkItemTracking.Server;
 using TFSWIWatcher.BL.Configuration;
 
@@ -39,11 +40,13 @@ namespace TFSWIWatcher.BL
             internal set;
         }
 
+        public IVssRequestContext RequestContext { get; internal set; }
+
         #endregion
 
         #region Constructors
 
-        public WorkItemChangedContext(WorkItemChangeInfo changeInfo, TfsTeamProjectCollection teamProjectCollection, int workItemID, int workItemRevision, SubscriberConfig configSettings, WorkItemChangedEvent workItemChangedEvent)
+        public WorkItemChangedContext(WorkItemChangeInfo changeInfo, TfsTeamProjectCollection teamProjectCollection, int workItemID, int workItemRevision, SubscriberConfig configSettings, WorkItemChangedEvent workItemChangedEvent, IVssRequestContext requestContext)
         {
             WorkItemChangeInfo = changeInfo;
             TeamProjectCollection = teamProjectCollection;
@@ -51,6 +54,7 @@ namespace TFSWIWatcher.BL
             WorkItemRevision = workItemRevision;
             ConfigSettings = configSettings;
             WorkItemChangedEvent = workItemChangedEvent;
+            RequestContext = requestContext;
         }
 
         #endregion
