@@ -2,11 +2,13 @@
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using System.Xml.Linq;
-using Microsoft.TeamFoundation.WorkItemTracking.Server;
+
 using log4net;
 using Microsoft.TeamFoundation.WorkItemTracking.Client;
+using Microsoft.TeamFoundation.WorkItemTracking.Server;
 using TFSWIWatcher.BL.Configuration;
 using System.Linq;
+using WorkItem = Microsoft.TeamFoundation.WorkItemTracking.Client.WorkItem;
 
 namespace TFSWIWatcher.BL.Providers
 {

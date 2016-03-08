@@ -2,7 +2,7 @@
 	<UsingTask TaskName="Zip" AssemblyFile="..\Components\MSBuild.Community.Tasks.dll" />
 
 	<PropertyGroup>
-		<ReleaseVersion>V1_12</ReleaseVersion>
+		<ReleaseVersion>V1_3</ReleaseVersion>
 		<Release_Destination_Base_Path>C:\Releases\TFSWIWatcher\</Release_Destination_Base_Path>
 		<Release_Destination_Path>$(Release_Destination_Base_Path)$(ReleaseVersion)\</Release_Destination_Path>
 		<Solution_Root_Path>..\..\</Solution_Root_Path>
@@ -29,7 +29,7 @@
 	<Target Name="CopyBuildOutput">
 		<RemoveDir Directories="$(Release_Destination_Path)" ContinueOnError="true" />
 
-		<CreateItem Include="$(WIWPlugin_Bin_Path)**" Exclude="$(WIWPlugin_Bin_Path)*Microsoft*; $(WIWPlugin_Bin_Path)*.xml; $(WIWPlugin_Bin_Path)*vshost*; $(WIWPlugin_Bin_Path)*.pdb; $(WIWPlugin_Bin_Path)*.config; $(WIWPlugin_Bin_Path)*.txt">
+		<CreateItem Include="$(WIWPlugin_Bin_Path)TFSWIWatcher.BL.dll;$(WIWPlugin_Bin_Path)log4net.dll">
 			<Output TaskParameter="Include" ItemName="WIWBuildOutput"/>
 		</CreateItem>
 
