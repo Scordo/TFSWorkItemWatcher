@@ -10,6 +10,7 @@ using TFSWIWatcher.BL.Providers;
 using log4net;
 using System.Linq;
 using log4net.Config;
+using Microsoft.VisualStudio.Services.Location.Server;
 
 namespace TFSWIWatcher.BL
 {
@@ -37,7 +38,7 @@ namespace TFSWIWatcher.BL
             return new[] {typeof (WorkItemChangedEvent)};
         }
 
-        EventNotificationStatus ISubscriber.ProcessEvent(TeamFoundationRequestContext requestContext, NotificationType notificationType, object notificationEventArgs, out int statusCode, out string statusMessage, out ExceptionPropertyCollection properties)
+        EventNotificationStatus ISubscriber.ProcessEvent(IVssRequestContext requestContext, NotificationType notificationType, object notificationEventArgs, out int statusCode, out string statusMessage, out ExceptionPropertyCollection properties)
         {
             statusCode = 0;
             properties = null;
@@ -80,7 +81,7 @@ namespace TFSWIWatcher.BL
             get { return _notifyProviders.Value; }
         }
 
-        private void OnWorkitemChanged(TeamFoundationRequestContext requestContext, WorkItemChangedEvent workItemChangedEvent)
+        private void OnWorkitemChanged(IVssRequestContext requestContext, WorkItemChangedEvent workItemChangedEvent)
         {
             Log.Debug("Start: Creating context");
             WorkItemChangedContext context = GetWorkItemChangedContext(requestContext, workItemChangedEvent);
@@ -111,7 +112,7 @@ namespace TFSWIWatcher.BL
             Log.Debug("Finish: Notifying");
         }
 
-        private WorkItemChangedContext GetWorkItemChangedContext(TeamFoundationRequestContext requestContext, WorkItemChangedEvent workItemChangedEvent)
+        private WorkItemChangedContext GetWorkItemChangedContext(IVssRequestContext requestContext, WorkItemChangedEvent workItemChangedEvent)
         {
             Log.DebugFormat("Start: Creating WorkItemChangedContext");
 
@@ -180,10 +181,10 @@ namespace TFSWIWatcher.BL
             return result;
         }
 
-        private TfsTeamProjectCollection GetTeamProjectCollection(TeamFoundationRequestContext requestContext)
+        private TfsTeamProjectCollection GetTeamProjectCollection(IVssRequestContext requestContext)
         {
-            TeamFoundationLocationService locationService = requestContext.GetService<TeamFoundationLocationService>();
-            Uri uri = new Uri(string.Format("{0}/{1}", locationService.GetServerAccessMapping(requestContext).AccessPoint, requestContext.ServiceHost.Name));
+            ILocationService locationService = requestContext.GetService<ILocationService>();
+            Uri uri = new Uri($"{locationService.GetServerAccessMapping(requestContext).AccessPoint}/{requestContext.ServiceHost.Name}");
 
             return TfsTeamProjectCollectionFactory.GetTeamProjectCollection(uri);
         }
