@@ -85,7 +85,7 @@ namespace TFSWIWatcher.BL.Providers
 
                 _log.DebugFormat("Finish: Getting WorkItem with ID {0} and Revision {1}.", context.WorkItemID, context.WorkItemRevision);
 
-                Field presentObserverField = workItem.Fields.OfType<Field>().FirstOrDefault(f => f.Name.Equals(_config.ObserversFieldName));
+                Field presentObserverField = workItem.Fields.OfType<Field>().FirstOrDefault(f => f.Name.Equals(_config.ObserversFieldName)) ?? workItem.Fields.OfType<Field>().FirstOrDefault(f => f.ReferenceName.Equals(_config.ObserversFieldName));
 
                 if (presentObserverField != null)
                     uniqueObservers = new HashSet<string>(GetObserversFromText(Convert.ToString(presentObserverField.Value)));

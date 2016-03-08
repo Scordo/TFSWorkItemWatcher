@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using System.Net;
 using System.Text;
 using System.Xml;
 using System.Xml.Linq;
@@ -11,9 +10,9 @@ using System.Collections.Generic;
 using Microsoft.TeamFoundation.Client;
 using Microsoft.TeamFoundation.Framework.Client;
 using Microsoft.TeamFoundation.Framework.Common;
-using Microsoft.TeamFoundation.Server;
 using Microsoft.TeamFoundation.WorkItemTracking.Server;
 using log4net;
+using Microsoft.TeamFoundation.Framework.Server;
 using TFSWIWatcher.BL.Configuration;
 
 namespace TFSWIWatcher.BL.Providers
@@ -24,11 +23,7 @@ namespace TFSWIWatcher.BL.Providers
 
         private MailNotifyConfigSettings _config;
         private static readonly ILog _log = LogManager.GetLogger(typeof(MailNotifyProvider));
-        private static SmtpClient MailClient { get; set; }
-        private static ICredentialsByHost MailCredentials { get; set; }
-        private static string MailFromAddress { get; set; }
-
-
+        
         #endregion
 
         #region INotifyProvider Members
@@ -96,19 +91,19 @@ namespace TFSWIWatcher.BL.Providers
 
             try
             {
-                EnsureMailClientInitialized(context.TeamProjectCollection.ConfigurationServer);
+                IVssRequestContext deploymentRequestContext = context.RequestContext.To(TeamFoundationHostType.Deployment);
+                TeamFoundationMailService mailService = deploymentRequestContext.GetService<TeamFoundationMailService>();
 
                 MailMessage mail = new MailMessage();
                 mail.To.Add(new MailAddress(email, observerAccount));
 
                 //set the content
-                mail.Subject = string.Format("Workitem {0} [{1}] has changed...", context.WorkItemID, context.WorkItemChangeInfo.WorkItemTitle);
+                mail.Subject = $"Workitem {context.WorkItemID} [{context.WorkItemChangeInfo.WorkItemTitle}] has changed...";
                 mail.Body = GetTransformedHtml(context.WorkItemChangedEvent);
                 mail.IsBodyHtml = true;
-                mail.From = new MailAddress(MailFromAddress);
 
                 //send the message
-                MailClient.Send(mail);
+                mailService.QueueMailJob(deploymentRequestContext, mail);
             }
             catch (Exception ex)
             {
@@ -186,40 +181,6 @@ namespace TFSWIWatcher.BL.Providers
             TeamFoundationIdentity identity = identityManagement.ReadIdentity(IdentitySearchFactor.AccountName, domainAndUsername, MembershipQuery.None, ReadIdentityOptions.ExtendedProperties | ReadIdentityOptions.IncludeReadFromSource);
 
             return (identity != null) ? identity.GetAttribute("Mail", null) : null;
-        }
-
-        private static void EnsureMailClientInitialized(TfsConfigurationServer configurationServer)
-        {
-            if (MailClient != null)
-                return;
-
-            ITeamFoundationRegistry registry = configurationServer.GetService<ITeamFoundationRegistry>();
-
-			string smtpServer = registry.GetValue("/Service/Integration/Settings/SmtpServer");
-			
-			if(string.IsNullOrWhiteSpace(smtpServer))
-				throw new Exception("Unable to get SmtpServer value from TFS registry.");
-
-			int port = registry.GetValue<int>("/Service/Integration/Settings/SmtpPort");
-
-			MailClient = new SmtpClient(smtpServer, port == 0 ? 25 : port);
-
-            MailFromAddress = registry.GetValue("/Service/Integration/Settings/EmailNotificationFromAddress");
-
-            if (string.IsNullOrWhiteSpace(MailFromAddress))
-				throw new Exception("Unable to get EmailNotificationFromAddress value from TFS registry.");
-
-            string user = registry.GetValue("/Service/Integration/Settings/SmtpUser");
-
-            if (string.IsNullOrWhiteSpace(user))
-                return;
-
-            string password = registry.GetValue("/Service/Integration/Settings/SmtpPassword");
-
-            if (string.IsNullOrWhiteSpace(password))
-                throw new Exception("Unable to get SmtpPassword value from TFS registry.");
-
-            MailClient.Credentials = new NetworkCredential(user, password);
         }
 
         #endregion
