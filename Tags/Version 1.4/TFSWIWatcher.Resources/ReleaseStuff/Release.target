@@ -1,0 +1,64 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="CreateRelease">
+	<UsingTask TaskName="Zip" AssemblyFile="..\Components\MSBuild.Community.Tasks.dll" />
+
+	<PropertyGroup>
+		<ReleaseVersion>V1_4</ReleaseVersion>
+		<Release_Destination_Base_Path>C:\Releases\TFSWIWatcher\</Release_Destination_Base_Path>
+		<Release_Destination_Path>$(Release_Destination_Base_Path)$(ReleaseVersion)\</Release_Destination_Path>
+		<Solution_Root_Path>..\..\</Solution_Root_Path>
+		<Configuration>Release</Configuration>
+		<WIWPlugin_Bin_Path>$(Solution_Root_Path)TFSWIWatcher.BL\bin\$(Configuration)\</WIWPlugin_Bin_Path>
+		<WIWResources_Path>$(Solution_Root_Path)TFSWIWatcher.Resources\</WIWResources_Path>
+		<WIWResources_ReleaseStuff_Path>$(WIWResources_Path)ReleaseStuff\</WIWResources_ReleaseStuff_Path>
+		<WIWResources_Documentation_Path>$(WIWResources_Path)Documentation\</WIWResources_Documentation_Path>
+	</PropertyGroup>
+
+	
+	
+	<Target Name="CreateRelease">
+		<CallTarget Targets="BuildRelease"/>
+		<CallTarget Targets="CopyBuildOutput"/>
+		<CallTarget Targets="CopyAdditionalStuff"/>
+		<CallTarget Targets="ZipIt"/>
+	</Target>
+
+	<Target Name="BuildRelease">
+		<MSBuild Projects="$(Solution_Root_Path)TFSWIWatcher.sln" Properties="Configuration=$(Configuration)"/>
+	</Target>
+
+	<Target Name="CopyBuildOutput">
+		<RemoveDir Directories="$(Release_Destination_Path)" ContinueOnError="true" />
+
+		<CreateItem Include="$(WIWPlugin_Bin_Path)TFSWIWatcher.BL.dll;$(WIWPlugin_Bin_Path)log4net.dll">
+			<Output TaskParameter="Include" ItemName="WIWBuildOutput"/>
+		</CreateItem>
+
+		<Copy SourceFiles="@(WIWBuildOutput)" DestinationFolder="$(Release_Destination_Path)%(RecursiveDir)" />
+	</Target>
+
+	<Target Name="CopyAdditionalStuff">
+		<Copy SourceFiles="$(WIWResources_ReleaseStuff_Path)TFSWIWatcher.BL.dll.config" DestinationFolder="$(Release_Destination_Path)" />
+    <Copy SourceFiles="$(WIWResources_ReleaseStuff_Path)TFSWIWatcher.BL.dll.logconfig" DestinationFolder="$(Release_Destination_Path)" />
+
+		<CreateItem Include="$(WIWResources_Documentation_Path)**">
+			<Output TaskParameter="Include" ItemName="DocumentationFiles"/>
+		</CreateItem>
+		
+		<Copy SourceFiles="@(DocumentationFiles)" DestinationFolder="$(Release_Destination_Path)Documentation\%(RecursiveDir)" />
+	</Target>
+
+	<Target Name="ZipIt">
+		<CreateItem Include="$(Release_Destination_Path)**\*.*">
+			<Output TaskParameter="Include" ItemName="FilesToZip"/>
+		</CreateItem>
+
+		<Zip Files="@(FilesToZip)" WorkingDirectory="$(Release_Destination_Path)" ZipFileName="$(Release_Destination_Path)TFSWIWatcher_$(ReleaseVersion).zip" />
+
+		<CreateItem Include="$(Release_Destination_Path)**\*.*" Exclude="$(Release_Destination_Path)**\*.zip">
+			<Output TaskParameter="Include" ItemName="FilesToDelete"/>
+		</CreateItem>
+		
+		<Delete Files="@(FilesToDelete)" />
+		<RemoveDir Directories="$(Release_Destination_Path)\Documentation" />
+	</Target>
+</Project>
