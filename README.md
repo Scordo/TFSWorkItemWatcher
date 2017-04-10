@@ -3,6 +3,8 @@ TFSWIWatcher is a service which allows you to register for watching workitems in
 
 By default TFSWIWatcher watches all changes of workitems and determines the accounts to be notified by looking up the texbox in a new tab of the workitem called Observers. This tab holds a list of account names - each account name on a singe line:
 
+![Observer-Tab](https://github.com/Scordo/TFSWorkItemWatcher/blob/master/TFSWIWatcher.Resources/Documentation/Resources/ObserverTab.jpg)
+
 TFSWIWatcher will then determine the email addresses of the provided account names and will send a mail to each account.
 
 **Features**
