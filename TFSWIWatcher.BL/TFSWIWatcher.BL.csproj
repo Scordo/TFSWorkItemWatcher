@@ -1,5 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="TFSWIWatcher.BL.csproj.custom" Condition="Exists('TFSWIWatcher.BL.csproj.custom')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -10,7 +11,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>TFSWIWatcher.BL</RootNamespace>
     <AssemblyName>TFSWIWatcher.BL</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SccProjectName>SAK</SccProjectName>
     <SccLocalPath>SAK</SccLocalPath>
@@ -21,6 +22,7 @@
     <OldToolsVersion>3.5</OldToolsVersion>
     <UpgradeBackupLocation />
     <TargetFrameworkProfile />
+	<TfsServerWebServicesBinDir Condition="'$(TfsServerWebServicesBinDir)' == ''">C:\Program Files\Microsoft Team Foundation Server 2018\Application Tier\Web Services\bin</TfsServerWebServicesBinDir>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -97,27 +99,34 @@
     </Reference>
     <Reference Include="Microsoft.TeamFoundation.Client, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>C:\Program Files (x86)\Microsoft Visual Studio 14.0\Common7\IDE\Extensions\zfgniipa.z34\Microsoft.TeamFoundation.Client.dll</HintPath>
+      <HintPath>$(TfsServerWebServicesBinDir)\Microsoft.TeamFoundation.Client.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="Microsoft.TeamFoundation.Common, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>C:\Program Files (x86)\Microsoft Visual Studio 14.0\Common7\IDE\Extensions\zfgniipa.z34\Microsoft.TeamFoundation.Common.dll</HintPath>
+      <HintPath>$(TfsServerWebServicesBinDir)\Microsoft.TeamFoundation.Common.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="Microsoft.TeamFoundation.Framework.Server">
-      <HintPath>..\TFSWIWatcher.Resources\Components\Microsoft.TeamFoundation.Framework.Server.dll</HintPath>
+      <HintPath>$(TfsServerWebServicesBinDir)\Microsoft.TeamFoundation.Framework.Server.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="Microsoft.TeamFoundation.WorkItemTracking.Client, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>C:\Program Files (x86)\Microsoft Visual Studio 14.0\Common7\IDE\Extensions\zfgniipa.z34\Microsoft.TeamFoundation.WorkItemTracking.Client.dll</HintPath>
+      <HintPath>$(TfsServerWebServicesBinDir)\Microsoft.TeamFoundation.WorkItemTracking.Client.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="Microsoft.TeamFoundation.WorkItemTracking.Server">
-      <HintPath>..\TFSWIWatcher.Resources\Components\Microsoft.TeamFoundation.WorkItemTracking.Server.dll</HintPath>
+      <HintPath>$(TfsServerWebServicesBinDir)\Microsoft.TeamFoundation.WorkItemTracking.Server.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="Microsoft.VisualStudio.Services.Common">
-      <HintPath>C:\Program Files (x86)\Microsoft Visual Studio 14.0\Common7\IDE\Extensions\zfgniipa.z34\Microsoft.VisualStudio.Services.Common.dll</HintPath>
+      <HintPath>$(TfsServerWebServicesBinDir)\Microsoft.VisualStudio.Services.Common.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="Microsoft.VisualStudio.Services.WebApi">
-      <HintPath>C:\Program Files (x86)\Microsoft Visual Studio 14.0\Common7\IDE\Extensions\zfgniipa.z34\Microsoft.VisualStudio.Services.WebApi.dll</HintPath>
+      <HintPath>$(TfsServerWebServicesBinDir)\Microsoft.VisualStudio.Services.WebApi.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.configuration" />

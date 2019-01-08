@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <!-- Copy this file next to TFSWIWatcher.BL.csproj and provide the correct path to your local tfs server path -->
+    <TfsServerWebServicesBinDir>C:\Program Files\Microsoft Team Foundation Server 2018\Application Tier\Web Services\bin</TfsServerWebServicesBinDir>
+  </PropertyGroup>
+</Project>

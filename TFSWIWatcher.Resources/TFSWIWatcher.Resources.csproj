@@ -52,8 +52,6 @@
     <Content Include="Components\ICSharpCode.SharpZipLib.dll" />
     <Content Include="Components\log4net.dll" />
     <Content Include="Components\log4net.xml" />
-    <Content Include="Components\Microsoft.TeamFoundation.Framework.Server.dll" />
-    <Content Include="Components\Microsoft.TeamFoundation.WorkItemTracking.Server.dll" />
     <Content Include="Components\MSBuild.Community.Tasks.dll" />
     <Content Include="Components\MSBuild.Community.Tasks.xml" />
     <Content Include="Documentation\Index.html" />
@@ -80,6 +78,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Components\MSBuild.Community.Tasks.xsd" />
+    <None Include="Components\TFSWIWatcher.BL.csproj.custom" />
     <None Include="ReleaseStuff\CreateRelease.bat" />
     <None Include="ReleaseStuff\Release.target" />
     <None Include="ReleaseStuff\TFSWIWatcher.BL.dll.config" />
