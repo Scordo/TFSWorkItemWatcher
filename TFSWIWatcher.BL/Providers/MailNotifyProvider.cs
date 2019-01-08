@@ -7,6 +7,7 @@ using System.Xml.Serialization;
 using System.Xml.Xsl;
 using System.Net.Mail;
 using System.Collections.Generic;
+using System.Linq;
 using Microsoft.TeamFoundation.Client;
 using Microsoft.TeamFoundation.Framework.Client;
 using Microsoft.TeamFoundation.Framework.Common;
@@ -175,12 +176,25 @@ namespace TFSWIWatcher.BL.Providers
                 // username is an email address --> return the email
                 return domainAndUsername.Trim();
             }
-
-
+            
             IIdentityManagementService identityManagement = (IIdentityManagementService)projectCollection.GetService(typeof(IIdentityManagementService));
             TeamFoundationIdentity identity = identityManagement.ReadIdentity(IdentitySearchFactor.AccountName, domainAndUsername, MembershipQuery.None, ReadIdentityOptions.ExtendedProperties | ReadIdentityOptions.IncludeReadFromSource);
 
-            return (identity != null) ? identity.GetAttribute("Mail", null) : null;
+            if (identity == null)
+                return null;
+
+            return GetPropertyValueAsString(identity, "ConfirmedNotificationAddress") ??
+                   GetPropertyValueAsString(identity, "CustomNotificationAddress") ??
+                   GetPropertyValueAsString(identity, "Mail");
+        }
+
+        private static string GetPropertyValueAsString(TeamFoundationIdentity identity, string propertyName, bool nullOrEmptyAsNull = true)
+        {
+            if (!identity.TryGetProperty(IdentityPropertyScope.Both, propertyName, out object propertValue))
+                return null;
+            string result = Convert.ToString(propertValue);
+
+            return nullOrEmptyAsNull && string.IsNullOrWhiteSpace(result)  ? null : result;
         }
 
         #endregion
